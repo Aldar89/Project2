@@ -32,7 +32,7 @@ class  CartController
         session_start();
         $user_id = $_SESSION['user_id'];
         if (!isset($user_id)) {
-            header('Location: get_login.php');
+            header('Location: /login');
         }
 
         $cartModel = new UserProduct();

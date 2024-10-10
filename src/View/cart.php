@@ -5,7 +5,9 @@
 ?>
 
 <div class="container">
-    <h3>Catalog</h3>
+    <h3>КОРЗИНА</h3>
+    <a href="/logout">ВЫЙТИ</a>
+    <a href="/catalog2">КАТАЛОГ</a>
     <div class="card-deck">
         <?php foreach ($userProduct as $product):?>
         <div class="card text-center">
@@ -13,12 +15,12 @@
                 <div class="card-header">
                     <?php echo $product['product_name'];?>
                 </div>
-                <img class="card-img-top" src="<?php echo $product['image']?>" alt="Card image">
+                <img class="card-img-top" src="<?php echo $product['image']?>" alt="Card image" width="140" height="140">
                 <div class="card-body">
-                    <p class="card-text text-muted"><?php echo $product['amount']?></p>
-                    <a href="#"><h5 class="card-title">ЦЕНА</h5></a>
+                    <p  class="card-text text-muted"><?php echo $product['amount']?>  шт.</p>
                     <div class="card-footer">
-                        <?php echo $product['price'], ' РУБЛЕЙ';?>
+                        <?php echo 'Цена ',$product['price'], ' РУБЛЕЙ';?>
+                        <a href="#"><h5 class="card-title"></h5></a>
                     </div>
                 </div>
             </a>
@@ -54,8 +56,8 @@
     }
 
     .card-header {
-        font-size: 13px;
-        color: gray;
+        font-size: 20px;
+        color: darkred;
         background-color: white;
     }
 

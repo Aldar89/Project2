@@ -105,13 +105,21 @@ class UserController
 //         setcookie('user_id', $data['id'], time() + 3600);
                 session_start();
                 $_SESSION['user_id'] = $data['id'];
+                $user_id = $_SESSION['user_id'];
                 header('Location: /catalog');
             } else {
                 $errors['password'] = 'Пароль указан неправильно';
             }
         }
-        require_once './get_login.php';
+        require_once './../View/get_login.php';
 
+    }
+
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+        header('Location: /login');
     }
 
 }

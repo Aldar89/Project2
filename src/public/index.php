@@ -52,4 +52,18 @@ elseif ($requestUri === '/cart'){
         echo 'Invalid request method';
     }
 }
+elseif ($requestUri === '/catalog2'){
+    if ($requestMethod === 'GET'){
+        $product = new ProductController();
+        $product->getAll();
+    }else {
+        echo 'Invalid request method';
+    }
+}
+elseif ($requestUri === '/logout'){
+    if ($requestMethod === 'GET') {
+    $user = new UserController();
+    $user->logout();
+    }
+}
 else require_once './404.php';
