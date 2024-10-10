@@ -23,9 +23,9 @@
 <br>
 <br>
 <br>
-<div class="grid-container">
+</div class="grid-container">
     <h3 class="card text-center">ОПТОВАЯ БАЗА</h3>
-    <a style="text-align: right"  " " href="/logout">ВЫЙТИ</a>
+    <a style="float: right" " href="/logout">ВЫЙТИ</a>
     <a href="/cart">КОРЗИНА</a>
     <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-4 grid-x-wrapper">
         <?php foreach ($products as $product):?>
