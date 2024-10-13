@@ -3,7 +3,7 @@
 
 class UserProduct
 {
-    public function getAll($user_id)
+    public function getAll(int $user_id)
     {
         $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
         $stmt = $pdo->prepare("SELECT products.name AS product_name, products.image, products.description, products.price, users.name AS user_name, user_products.amount 
@@ -17,7 +17,7 @@ class UserProduct
         return $userProduct;
     }
 
-    public function getByUserIdAndByProductId($user_id, $product_id)
+    public function getByUserIdAndByProductId(int $user_id,int $product_id)
     {
         $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
 
@@ -27,7 +27,7 @@ class UserProduct
         return $result;
     }
 
-    public function create($user_id, $product_id, $amount)
+    public function create(int $user_id,int $product_id,int $amount)
     {
         $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
 
@@ -35,12 +35,21 @@ class UserProduct
         $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'amount' => $amount]);
     }
 
-    public function addProduct($user_id, $product_id, $amount)
+    public function addProduct(int $user_id,int $product_id,int $amount)
     {
         $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
 
         $stmt = $pdo->prepare("UPDATE user_products SET amount = :amount WHERE user_id = :user_id AND product_id = :product_id");
         $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id, 'amount' => $amount]);
+    }
+
+    public function getAmount(int $user_id,int $product_id)
+    {
+        $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
+        $stmt = $pdo->prepare("SELECT amount FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+        $result = $stmt->fetch();
+
     }
 
 

@@ -4,6 +4,7 @@
 require_once './../Controller/UserController.php';
 require_once './../Controller/CartController.php';
 require_once './../Controller/ProductController.php';
+require_once './../Controller/OrderController.php';
 
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -66,4 +67,20 @@ elseif ($requestUri === '/logout'){
     $user->logout();
     }
 }
-else require_once './404.php';
+elseif ($requestUri === '/registrateOrder'){
+    if ($requestMethod === 'GET'){
+        $order = new OrderController();
+        $order->getRegistrateOrder();
+    }
+     else {
+        echo 'Invalid request method';
+    }
+}
+elseif ($requestUri === '/add-order'){
+    if ($requestMethod === 'POST'){
+        $order = new OrderController();
+        $order->registrateOrder();
+        echo '123';
+    }
+}
+else require_once './../View/404.php';

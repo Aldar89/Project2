@@ -8,11 +8,13 @@ services:
       - '/home/aldar/PhpstormProjects/project2/Docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
       - '/home/aldar/PhpstormProjects/project2:/var/www/html'
 
+
   php-fpm:
     build: ./Docker/php
     restart: always
     volumes:
       - '.:/var/www/html'
+      - ./Docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
   postgres:
     image: postgres:13

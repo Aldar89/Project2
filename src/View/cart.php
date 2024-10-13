@@ -1,13 +1,10 @@
-<?php
 
-
-
-?>
 
 <div class="container">
     <h3>КОРЗИНА</h3>
     <a href="/logout">ВЫЙТИ</a>
     <a href="/catalog2">КАТАЛОГ</a>
+    <a href="/registrateOrder">ОФОРМИТЬ ЗАКАЗ</a>
     <div class="card-deck">
         <?php foreach ($userProduct as $product):?>
         <div class="card text-center">

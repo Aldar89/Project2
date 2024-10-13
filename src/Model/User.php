@@ -2,7 +2,7 @@
 
 class User
 {
-    public function create($password, $name, $email)
+    public function create(string $password,string $name,string $email)
     {
         $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
         $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
@@ -14,7 +14,7 @@ class User
     header('Location: /login');
     }
 
-    public function getByEmail($email)
+    public function getByEmail(string $email)
     {
         $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
