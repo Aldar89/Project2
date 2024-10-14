@@ -8,7 +8,9 @@ class  CartController
     public function addProduct()
     {
         session_start();
-        $user_id = $_SESSION['user_id'];
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+        }else { header("location: ../View/login.php"); }
         if (isset($_POST['product_id'])) {
             $product_id = $_POST['product_id'];
         }
@@ -30,13 +32,13 @@ class  CartController
     public function getAll()
     {
         session_start();
-        $user_id = $_SESSION['user_id'];
-        if (!isset($user_id)) {
-            header('Location: /login');
-        }
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+        }else { header("location: ../View/login.php"); }
 
-        $cartModel = new UserProduct();
-        $userProduct = $cartModel->getAll($user_id);
+        $UserProductModel = new UserProduct();
+        $userProduct = $UserProductModel->getAll($user_id);
+        $allAmount = $this->getAllCount();
 
 //$stmt = $pdo->prepare("SELECT * FROM user_products where user_id = :user_id");
 //$stmt->execute(['user_id' => $user_id]);
@@ -52,6 +54,34 @@ class  CartController
 //    print_r($userProduct);
 
         require_once './../View/cart.php';
+    }
+
+    public function deleteProductCart()
+    {
+        session_start();
+        $user_id = $_SESSION['user_id'];
+        if (!isset($user_id)) {
+            header('Location: /login');
+        }
+        $cartModel = new UserProduct();
+        $userProduct = $cartModel->deleteAll($user_id);
+
+    }
+
+    public function getAllCount()
+    {
+        session_start();
+        $user_id = $_SESSION['user_id'];
+
+        $UserProductModel = new UserProduct();
+        $userProduct = $UserProductModel->getAll($user_id);
+
+        foreach ($userProduct as $product) {
+            $amount = $product['amount'];
+            $allAmount +=$amount;
+        }
+        return $allAmount;
+
     }
 
 }

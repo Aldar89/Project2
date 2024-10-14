@@ -30,7 +30,9 @@
 
         <div class="clearfix">
 
-            <a href="/add-order" class="button-style">ЗАКАЗАТЬ</a>
+        </div>
+        <button type="submit" class="registerbtn">RegisterOder</button>
+    </div>
         </div>
     </div>
 </form>

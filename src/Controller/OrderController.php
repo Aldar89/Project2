@@ -13,12 +13,41 @@ class OrderController
     public function getRegistrateOrder()
     {
         session_start();
-        $user_id = $_SESSION['user_id'];
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+        }else { header("location: ../View/login.php"); }
         $cartModel = new UserProduct();
         $userProduct = $cartModel->getAll($user_id);
         require_once './../View/get_registrationOrder.php';
     }
 
+    public function registrateOrder()
+    {
+        session_start();
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+        }else { header("location: ../View/login.php"); }
+        $errors = $this->validate();
+        if (empty($errors))
+        {
+            $date = new DateTime();
+            $date = $date->format('Y-m-d H:i:s');
+            $order = new Order();
+            $orderId = $order->create($user_id, $date, $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['phone']);
+
+            $userProduct = new UserProduct();
+            $userProducts = $userProduct->getAll($user_id);
+
+
+            foreach ($userProducts as $userProduct) {
+                $orderProduct = new OrderProduct();
+                $productId = $userProduct['product_id'];
+                $amount = $userProduct['amount'];
+                $orderProduct->createOrder($orderId, $productId, $amount);
+            }
+        }
+
+    }
     public function validate()
     {
         if (isset($_POST['first_name'])) {
@@ -60,37 +89,6 @@ class OrderController
             $errors['phone'] = ' не должно быть меньше двух символов';
         }
         return $errors;
-    }
-
-    public function registrateOrder()
-    {
-        session_start();
-        $user_id = $_SESSION['user_id'];
-        $errors = $this->validate();
-        if (empty($errors))
-        {
-            $date = new DateTime();
-            $date = $date->format('Y-m-d H:i:s');
-            $order = new Order();
-            $order->addInOrder($user_id, $date, $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['phone']);
-
-            $userProduct = new UserProduct();
-            $userProducts = $userProduct->getAll($user_id);
-            $orderId = $order->getOrderId($user_id);
-            $products = new Product();
-            $orderProduct = new OrderProduct();
-
-            foreach ($userProducts as $userProduct) {
-                $productId = $products->getProductId($user_id);
-                $amount = $userProduct->getAmount($productId);
-                $orderProduct->create($orderId, $productId, $amount);
-            }
-
-
-
-
-        }
-
     }
 
 }

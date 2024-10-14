@@ -1,11 +1,12 @@
 <?php
 
+require_once './PDO.php';
 class User
 {
     public function create(string $password,string $name,string $email)
     {
-        $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
-        $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        $pdo = new PDO;
+        $stmt = $pdo->getPdo()->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt->execute(['name' => $name, 'email' => $email, 'password' => $hash]);
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
@@ -16,8 +17,8 @@ class User
 
     public function getByEmail(string $email)
     {
-        $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=mydb', 'user', 'pwd');
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $pdo = new PDO;
+        $stmt = $pdo->getPdo()->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $result = $stmt->fetch();
         return $result;

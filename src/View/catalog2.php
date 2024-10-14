@@ -23,10 +23,11 @@
 <br>
 <br>
 <br>
+    <?php require_once './../Controller/CartController.php'?>
 </div class="grid-container">
     <h3 class="card text-center">ОПТОВАЯ БАЗА</h3>
     <a style="float: right" " href="/logout">ВЫЙТИ</a>
-    <a href="/cart">КОРЗИНА</a>
+    <a href="/cart">КОРЗИНА <?php echo $allAmount?></a>
     <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-4 grid-x-wrapper">
         <?php foreach ($products as $product):?>
         <div class="product-box column">
