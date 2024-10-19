@@ -1,10 +1,15 @@
 <?php
+namespace Controller;
+use Model\UserProduct;
 
-
-require_once './../Model/UserProduct.php';
+//require_once './../Model/UserProduct.php';
 
 class  CartController
 {
+    public function getAddProduct()
+    {
+        require_once './../View/get_add-product.php';
+    }
     public function addProduct()
     {
         session_start();
@@ -37,44 +42,26 @@ class  CartController
         }else { header("location: ../View/login.php"); }
 
         $UserProductModel = new UserProduct();
-        $userProduct = $UserProductModel->getAll($user_id);
+        $userProduct = $UserProductModel->getAllByUserId($user_id);
         $allAmount = $this->getAllCount();
-
-//$stmt = $pdo->prepare("SELECT * FROM user_products where user_id = :user_id");
-//$stmt->execute(['user_id' => $user_id]);
-//$productIds = $stmt->fetchAll();
-//print_r($productIds);
-//$userProduct =[];
-//foreach ($productIds as $productId) {
-//    $product = $productId['product_id'];
-//    $userProduct['amount'] = $productId['amount'];
-//    $stmt = $pdo->prepare("SELECT * FROM products where id = :product");
-//    $stmt->execute(['product' => $product]);
-//    $userProduct[] = $stmt->fetch();
-//    print_r($userProduct);
+        $totalPrice = $this->getTotalPrise();
 
         require_once './../View/cart.php';
     }
 
-    public function deleteProductCart()
+
+
+    public function getAllCount()
     {
-        session_start();
+        if(session_status() === PHP_SESSION_NONE) session_start();
         $user_id = $_SESSION['user_id'];
         if (!isset($user_id)) {
             header('Location: /login');
         }
-        $cartModel = new UserProduct();
-        $userProduct = $cartModel->deleteAll($user_id);
 
-    }
-
-    public function getAllCount()
-    {
-        session_start();
-        $user_id = $_SESSION['user_id'];
-
-        $UserProductModel = new UserProduct();
-        $userProduct = $UserProductModel->getAll($user_id);
+        $UserProducts = new UserProduct();
+        $userProduct = $UserProducts->getAllByUserId($user_id);
+        $allAmount = 0;
 
         foreach ($userProduct as $product) {
             $amount = $product['amount'];
@@ -83,5 +70,26 @@ class  CartController
         return $allAmount;
 
     }
+
+    public function getTotalPrise()
+    {
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        $user_id = $_SESSION['user_id'];
+        if (!isset($user_id)) {
+            header('Location: /login');
+        }
+        $UserProducts = new UserProduct();
+        $userProduct = $UserProducts->getAllByUserId($user_id);
+        $totalPrice = 0;
+        foreach ($userProduct as $product) {
+            $amount = $product['amount'];
+            $price = $product['price'];
+            $totalPrice +=$amount*$price;
+        }
+        return $totalPrice;
+
+    }
+
+
 
 }

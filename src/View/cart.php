@@ -3,7 +3,7 @@
 <div class="container">
     <h3>КОРЗИНА</h3>
     <a href="/logout">ВЫЙТИ</a>
-    <a href="/catalog2">КАТАЛОГ</a>
+    <a href="/catalog">КАТАЛОГ</a>
     <a href="/registrateOrder">ОФОРМИТЬ ЗАКАЗ</a>
     <div class="card-deck">
         <?php foreach ($userProduct as $product):?>
@@ -17,12 +17,14 @@
                     <p  class="card-text text-muted"><?php echo $product['amount']?>  шт.</p>
                     <div class="card-footer">
                         <?php echo 'Цена ',$product['price'], ' РУБЛЕЙ';?>
+                        <?php echo 'Сумма ',$product['price']* $product['amount'], ' РУБЛЕЙ';?>
                         <a href="#"><h5 class="card-title"></h5></a>
                     </div>
                 </div>
             </a>
         </div>
         <?php endforeach;?>
+        <?php echo 'ИТОГО ',$totalPrice, ' РУБЛЕЙ';?>
     </div>
 </div>
 
@@ -59,7 +61,7 @@
     }
 
     .text-muted {
-        font-size: 11px;
+        font-size: 20px;
     }
 
     .card-footer{

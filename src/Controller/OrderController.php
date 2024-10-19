@@ -1,11 +1,11 @@
 <?php
 
+namespace Controller;
+use Model\Order;
+use Model\UserProduct;
+use Model\OrderProduct;
+use Controller\CartController;
 
-
-require_once './../Model/UserProduct.php';
-require_once './../Model/Order.php';
-require_once './../Model/Product.php';
-require_once './../Model/OrderProduct.php';
 
 class OrderController
 
@@ -16,8 +16,11 @@ class OrderController
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
-        $cartModel = new UserProduct();
-        $userProduct = $cartModel->getAll($user_id);
+        $userProducts= new UserProduct();
+        $userProduct = $userProducts->getAllByUserId($user_id);
+        $cart = new CartController();
+        $totalPrice = $cart->getTotalPrise();
+
         require_once './../View/get_registrationOrder.php';
     }
 
@@ -30,21 +33,24 @@ class OrderController
         $errors = $this->validate();
         if (empty($errors))
         {
-            $date = new DateTime();
+            $date = new \DateTime();
             $date = $date->format('Y-m-d H:i:s');
             $order = new Order();
-            $orderId = $order->create($user_id, $date, $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['phone']);
+            $order->create($user_id, $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['phone'], $date);
 
             $userProduct = new UserProduct();
-            $userProducts = $userProduct->getAll($user_id);
-
+            $userProducts = $userProduct->getAllByUserId($user_id);
+            $orderId = $order->getOrderId($user_id);
 
             foreach ($userProducts as $userProduct) {
                 $orderProduct = new OrderProduct();
                 $productId = $userProduct['product_id'];
                 $amount = $userProduct['amount'];
-                $orderProduct->createOrder($orderId, $productId, $amount);
+                $orderProduct->createOrder($orderId['id'], $productId, $amount);
             }
+
+//            $userProduct->deleteAllInCart($user_id);
+//            header("location: /catalog");
         }
 
     }

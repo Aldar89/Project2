@@ -52,12 +52,14 @@
                         <p  class="card-text text-muted"><?php echo $product['amount']?>  шт.</p>
                         <div class="card-footer">
                             <?php echo 'Цена ',$product['price'], ' РУБЛЕЙ';?>
+                            <?php echo 'Сумма ',$product['price']* $product['amount'], ' РУБЛЕЙ';?>
                             <a href="#"><h5 class="card-title"></h5></a>
                         </div>
                     </div>
                 </a>
             </div>
         <?php endforeach;?>
+        <?php echo 'ИТОГО ',$totalPrice, ' РУБЛЕЙ';?>
     </div>
 
 </body>

@@ -1,6 +1,8 @@
 <?php
-
-require_once './../Model/Product.php';
+namespace Controller;
+use Model\Product;
+//require_once './../Model/Product.php';
+//require_once './../Controller/CartController.php';
 class ProductController
 {
     public function getAll()
@@ -16,6 +18,8 @@ class ProductController
         }
        $productModel = new Product();
         $products = $productModel->getAll();
+        $cart = new CartController();
+        $allAmount = $cart->getAllCount();
         require_once './../View/catalog2.php';
     }
 }
