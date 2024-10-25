@@ -5,6 +5,7 @@ use Model\Product;
 //require_once './../Controller/CartController.php';
 class ProductController
 {
+
     public function getAll()
     {
         session_start();
@@ -16,8 +17,8 @@ class ProductController
           if (!isset($user_id)) {
             header('Location: /login');
         }
-       $productModel = new Product();
-        $products = $productModel->getAll();
+        $product = new Product();
+        $products = $product->getAll();
         $cart = new CartController();
         $allAmount = $cart->getAllCount();
         require_once './../View/catalog2.php';

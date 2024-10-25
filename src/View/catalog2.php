@@ -23,43 +23,67 @@
 <br>
 <br>
 <br>
-    <?php require_once './../Controller/CartController.php'?>
+
 </div class="grid-container">
+<?php /** @var \Model\Product $product  */ ?>
     <h3 class="card text-center">ОПТОВАЯ БАЗА</h3>
     <a style="float: right" " href="/logout">ВЫЙТИ</a>
     <a href="/cart">КОРЗИНА <?php echo $allAmount?></a>
+<a href="/favorite">ИЗБРАННОЕ</a>
     <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-4 grid-x-wrapper">
         <?php foreach ($products as $product):?>
         <div class="product-box column">
             <a href="#" class="product-item">
                 <div class="product-item-image">
-                    <img src="<?php echo $product['image']?>" alt="Stadium Full Exterior" width="250" height="150">
+                    <img src="<?php echo $product->getImage() ?>" alt="Stadium Full Exterior" width="250" height="150">
                     <div class="product-item-image-hover">
                     </div>
                 </div>
                 <div class="product-item-content">
                     <div class="product-item-category">
-                        <?php echo $product['description']; ?>
+                        <?php echo $product->getDescription(); ?>
                     </div>
                     <div class="product-item-title">
-                        <?php echo $product['name'];?>
+                        <?php echo $product->getName();?>
                     </div>
                     <div class="product-item-price">
-                        <?php echo $product['price'], ' РУБЛЕЙ';?>
+                        <?php echo $product->getPrice(), ' РУБЛЕЙ';?>
                     </div>
-                    <div class="button-pill">
-                        <span>В корзину</span>
-                    </div>
+
                 </div>
             </a>
     </div>
+            <form action="/add-product" method="POST">
+                <div class="container">
+
+                    <label for="product-id"><b></b></label>
+                    <label style="color: red"> <?php if (isset($errors['product_id '])) {echo $errors['product_id'];} ?></label>
+                    <input type="hidden" name="product_id" placeholder= "Введите product_id" required value="<?=  $product->getId() ?>">
+
+                    <label for="amount"><b></b></label>
+                    <label style="color: red"> <?php if (isset($errors['amount'])) {echo $errors['amount'];}?></label>
+                    <input type="text" placeholder="Введите amount" name="amount" required>
+                    <button type = "submit" class="button-pill">
+                        <span>В корзину</span>
+                    </button>
+                </div>
+            </form>
+
+            <form action="/add-favorite" method="POST">
+                <label for="product-id"><b></b></label>
+                <label style="color: red"> <?php if (isset($errors['product_id '])) {echo $errors['product_id'];} ?></label>
+                <input type="hidden" name="product_id" placeholder= "Введите product_id" required value="<?=  $product->getId() ?>">
+                <button type="submit" class="button-pill" >
+                    <span>В ИЗБРАННОЕ</span>
+                </button>
+            </form>
         <?php endforeach;?>
 </div>
 
 <div class="grid-container">
     <div class="grid-x grid-margin-x small-up-1 medium-up-1 large-up-1 grid-x-wrapper">
         <div class="product-box column" style="text-align: center;  margin: 50px 0 50px;">
-            <a href="http:/catalog2" target="_blank" style="color: #0719a3; font-weight: 700; text-transform: uppercase;">C A T A L O G</a>
+            <a href="/catalog" target="_blank" style="color: #0719a3; font-weight: 700; text-transform: uppercase;">C A T A L O G</a>
         </div>
     </div>
 </div>

@@ -10,16 +10,29 @@ use Controller\CartController;
 class OrderController
 
 {
+    private Order $orderModel;
+    private UserProduct $userProductModel;
+    private CartController $cartModel;
+    private OrderProduct $orderProductModel;
+
+    public function __construct()
+    {
+        $this->userProductModel = new UserProduct();
+        $this->cartModel = new CartController();
+        $this->orderModel = new Order();
+        $this->orderProductModel = new OrderProduct();
+    }
+
     public function getRegistrateOrder()
     {
         session_start();
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
-        $userProducts= new UserProduct();
-        $userProduct = $userProducts->getAllByUserId($user_id);
-        $cart = new CartController();
-        $totalPrice = $cart->getTotalPrise();
+
+        $userProducts = $this->userProductModel->getAllByUserId($user_id);
+
+        $totalPrice = $this->cartModel->getTotalPrice();
 
         require_once './../View/get_registrationOrder.php';
     }
@@ -28,29 +41,31 @@ class OrderController
     {
         session_start();
         if (isset($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
+            $userId = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
         $errors = $this->validate();
         if (empty($errors))
         {
             $date = new \DateTime();
             $date = $date->format('Y-m-d H:i:s');
-            $order = new Order();
-            $order->create($user_id, $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['phone'], $date);
 
-            $userProduct = new UserProduct();
-            $userProducts = $userProduct->getAllByUserId($user_id);
-            $orderId = $order->getOrderId($user_id);
+            $this->orderModel->create($userId, $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['phone'], $date);
+
+
+            $userProducts = $this->userProductModel->getAllByUserId($userId);
+            $orderId = $this->orderModel->getId();
 
             foreach ($userProducts as $userProduct) {
                 $orderProduct = new OrderProduct();
-                $productId = $userProduct['product_id'];
-                $amount = $userProduct['amount'];
-                $orderProduct->createOrder($orderId['id'], $productId, $amount);
+                $productId = $this->userProductModel->getProduct()->getId();
+                $amount = $this->userProductModel->getAmount();
+                $orderProduct->createOrder($orderId, $productId, $amount);
+
             }
 
-//            $userProduct->deleteAllInCart($user_id);
-//            header("location: /catalog");
+            $this->cartModel->deleteCart();
+                header("location: /catalog");
+
         }
 
     }

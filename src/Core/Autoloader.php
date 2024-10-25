@@ -4,18 +4,18 @@ namespace Core;
 
 class Autoloader
 {
-    public function registrate()
+    public static function registrate(string $path):void
     {
-        $autoloader = function (string $className) {
-            $path = str_replace('\\', '/', $className);
-            $path = './../' . $path . '.php';
+        $autoload = function (string $className) use ($path)
+        {
+            $className = str_replace('\\', '/', $className);
+            $path = "../$className.php";
             if (file_exists($path)) {
                 require_once $path;
                 return true;
-            } else {
-                return false;
-            }
+            }  else {
+                return false; }
         };
-        spl_autoload_register($autoloader);
+        spl_autoload_register($autoload);
     }
 }

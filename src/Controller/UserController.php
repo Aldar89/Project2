@@ -4,6 +4,12 @@ namespace Controller;
 use Model\User;
 class UserController
 {
+     private User $user;
+
+     public function __construct(User $user){
+         $this->user = $user;
+     }
+
     public function getRegistrate()
     {
         require_once "./../View/get_registration.php";
@@ -68,8 +74,8 @@ class UserController
 
         if (empty($errors)) {
 
-            $userModel = new User();
-            $userModel->create($name,$email,$password);
+
+            $this->user->create($name,$email,$password);
 
             header('Location: /login');
         }
@@ -97,15 +103,15 @@ class UserController
         }
 
         if (empty($errors)) {
-            $userModel = new User();
-            $data = $userModel->getLogin($login);
 
-            if ($data === false){
+            $data = $this->user->getLogin($login);
+
+            if ($data === null){
                 $errors['login'] = 'Пользователя не существует';
-            } elseif     (password_verify($password,$data['password'])){
+            } elseif     (password_verify($password,$data->getPassword())){
 //         setcookie('user_id', $data['id'], time() + 3600);
                 session_start();
-                $_SESSION['user_id'] = $data['id'];
+                $_SESSION['user_id'] = $data->getId();
                 $user_id = $_SESSION['user_id'];
                 header('Location: /catalog');
             } else {

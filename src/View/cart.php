@@ -5,23 +5,29 @@
     <a href="/logout">ВЫЙТИ</a>
     <a href="/catalog">КАТАЛОГ</a>
     <a href="/registrateOrder">ОФОРМИТЬ ЗАКАЗ</a>
+    <?php /** @var \Model\UserProduct $userProduct  */ ?>
+    <?php /** @var \Model\UserProduct $product  */ ?>
     <div class="card-deck">
-        <?php foreach ($userProduct as $product):?>
+        <?php foreach ($userProducts as $userProduct):?>
         <div class="card text-center">
             <a href="#">
                 <div class="card-header">
-                    <?php echo $product['product_name'];?>
+                    <?php echo $userProduct->getProduct()->getName();?>
                 </div>
-                <img class="card-img-top" src="<?php echo $product['image']?>" alt="Card image" width="140" height="140">
+                <img class="card-img-top" src="<?php echo $userProduct->getProduct()->getImage() ?>" alt="Card image" width="140" height="140">
                 <div class="card-body">
-                    <p  class="card-text text-muted"><?php echo $product['amount']?>  шт.</p>
+                    <p  class="card-text text-muted"><?php echo $userProduct->getAmount();?>  шт.</p>
                     <div class="card-footer">
-                        <?php echo 'Цена ',$product['price'], ' РУБЛЕЙ';?>
-                        <?php echo 'Сумма ',$product['price']* $product['amount'], ' РУБЛЕЙ';?>
+                        <?php echo 'Цена ',$userProduct->getProduct()->getPrice(), ' РУБЛЕЙ';?>
+                        <?php echo 'Сумма ',$userProduct->getProduct()->getPrice()* $userProduct->getAmount(), ' РУБЛЕЙ';?>
                         <a href="#"><h5 class="card-title"></h5></a>
                     </div>
                 </div>
             </a>
+            <form action="/remove-product" method="POST">
+                <input type="text" hidden placeholder="Enter product-id" name="product_id" id="product-id" value=" <?php  echo $userProduct->getProduct()->getId() ?>"required>
+                <button type="submit">Удалить</button>
+            </form>
         </div>
         <?php endforeach;?>
         <?php echo 'ИТОГО ',$totalPrice, ' РУБЛЕЙ';?>
