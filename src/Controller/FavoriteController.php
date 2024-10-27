@@ -4,6 +4,7 @@ namespace Controller;
 use Model\FavoriteProduct;
 use Model\UserProduct;
 use Model\Product;
+use Request\ProductRequest;
 
 class FavoriteController
 {
@@ -31,15 +32,13 @@ class FavoriteController
 
     }
 
-    public function getFavorite()
+    public function getFavorite(ProductRequest $request)
     {
         session_start();
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
-        if (isset($_POST['product_id'])) {
-            $productId = $_POST['product_id'];
-        }
+        $productId = $request->getProductId();
         $favoriteProducts = $this->favoriteProduct->getFavoriteProductByUserId($userId);
 //        $productIds = [];
 //        foreach ($favoriteProducts as $favoriteProduct) {
@@ -55,16 +54,14 @@ class FavoriteController
         require "./../View/favorite.php";
     }
 
-    public function removeFavorite(){
+    public function removeFavorite(ProductRequest $request){
         session_start();
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
-        if (isset($_POST['product_id'])) {
-            $productId = $_POST['product_id'];
-        }
-        $favoriteProduct = new FavoriteProduct();
-        $favoriteProduct->deleteFavoriteProduct($userId, $productId);
+        $productId = $request->getProductId();
+
+        $this->favoriteProduct->deleteFavoriteProduct($userId, $productId);
         header("location:/catalog");
 
     }

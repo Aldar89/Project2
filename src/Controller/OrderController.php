@@ -5,6 +5,7 @@ use Model\Order;
 use Model\UserProduct;
 use Model\OrderProduct;
 use Controller\CartController;
+use Request\OrderRequest;
 
 
 class OrderController
@@ -37,29 +38,37 @@ class OrderController
         require_once './../View/get_registrationOrder.php';
     }
 
-    public function registrateOrder()
+    public function registrateOrder(OrderRequest $request)
     {
         session_start();
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
-        $errors = $this->validate();
+        $errors = $request->validate();
         if (empty($errors))
         {
             $date = new \DateTime();
             $date = $date->format('Y-m-d H:i:s');
+            $firstName = $request->getFirstName();
+            $lastName = $request->getLastName();
+            $address = $request->getAddress();
+            $phone = $request->getPhone();
 
-            $this->orderModel->create($userId, $_POST['first_name'], $_POST['last_name'], $_POST['address'], $_POST['phone'], $date);
+
+            $this->orderModel->create($userId, $firstName, $lastName, $address, $phone, $date);
 
 
             $userProducts = $this->userProductModel->getAllByUserId($userId);
-            $orderId = $this->orderModel->getId();
+            $orderFromDb = $this->orderModel->getOrderId( $userId);
+            $orderId = $orderFromDb->getId();
+
 
             foreach ($userProducts as $userProduct) {
                 $orderProduct = new OrderProduct();
-                $productId = $this->userProductModel->getProduct()->getId();
+
+                $product = $this->userProductModel->getProduct();
                 $amount = $this->userProductModel->getAmount();
-                $orderProduct->createOrder($orderId, $productId, $amount);
+                $orderProduct->createOrder($orderId, $product, $amount);
 
             }
 
@@ -68,48 +77,6 @@ class OrderController
 
         }
 
-    }
-    public function validate()
-    {
-        if (isset($_POST['first_name'])) {
-            $first_name = $_POST['first_name'];
-        }
-        if (isset($_POST['last_name'])) {
-            $last_name = $_POST['last_name'];
-        }
-        if (isset($_POST['address'])) {
-            $address = $_POST['address'];
-        }
-        if (isset($_POST['phone'])) {
-            $phone = $_POST['phone'];
-        }
-
-        $errors = [];
-        if (empty($first_name)) {
-            $errors['first_name'] = 'Имя не должно быть пустым!';
-        } elseif (strtoupper($first_name[0] !==$first_name[0])){
-            $errors['first_name'] = ' должно начинать с большой буквы';
-        }
-        if (strlen($first_name) < 2){
-            $errors['first_name'] = ' не должно быть меньше двух символов';
-        }
-        if (empty($last_name)) {
-            $errors['last_name'] = ' не должно быть пустым!';
-        } elseif (strtoupper($last_name[0] !==$last_name[0])){
-            $errors['last_name'] = ' должно начинать с большой буквы';
-        }
-        if (empty($address)) {
-            $errors['address'] = ' не должно быть пустым!';
-        } elseif(strlen($address) < 2) {
-            $errors['address'] = ' не должно быть меньше двух символов';
-        }
-        if (empty($phone)) {
-            $errors['phone'] = ' не должно быть пустым!';
-        }
-        elseif(strlen($phone) < 2) {
-            $errors['phone'] = ' не должно быть меньше двух символов';
-        }
-        return $errors;
     }
 
 }

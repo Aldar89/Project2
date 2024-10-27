@@ -1,6 +1,7 @@
 <?php
 namespace Controller;
 use Model\UserProduct;
+use Request\ProductRequest;
 
 //require_once './../Model/UserProduct.php';
 
@@ -15,27 +16,24 @@ class  CartController
     {
         require_once './../View/get_add-product.php';
     }
-    public function addProduct()
+    public function addProduct(ProductRequest $request)
     {
         session_start();
         if (isset($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
+            $userId = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
-        if (isset($_POST['product_id'])) {
-            $product_id = $_POST['product_id'];
-        }
 
-        if (isset($_POST['amount'])) {
-            $amount = $_POST['amount'];
-        }
+        $productId = $request->getProductId();
+        $amount = $request->getAmount();
 
-        $result = $this->userProduct->getByUserIdAndByProductId($user_id, $product_id);
+
+        $result = $this->userProduct->getByUserIdAndByProductId($userId, $productId);
         if ($result) {
             $amount =$amount + $result['amount'];
-           $this->userProduct->addProduct($user_id, $product_id, $amount);
+           $this->userProduct->addProduct($userId, $productId, $amount);
 
         } else {
-           $this->userProduct->create($user_id, $product_id, $amount);
+           $this->userProduct->create($userId, $productId, $amount);
 
         }
         header('location: /catalog');
@@ -46,11 +44,11 @@ class  CartController
     {
         session_start();
         if (isset($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
+            $userId = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
 
 
-        $userProducts = $this->userProduct->getAllByUserIdWhitoutJoin($user_id);
+        $userProducts = $this->userProduct->getAllByUserIdWhitoutJoin($userId);
         $allAmount = $this->getAllCount();
         $totalPrice = $this->getTotalPrice();
 
@@ -62,13 +60,13 @@ class  CartController
     public function getAllCount()
     {
         if(session_status() === PHP_SESSION_NONE) session_start();
-        $user_id = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'];
         if (!isset($user_id)) {
             header('Location: /login');
         }
 
 
-       $userProducts = $this->userProduct->getAllByUserIdWhitoutJoin($user_id);
+       $userProducts = $this->userProduct->getAllByUserIdWhitoutJoin($userId);
         $allAmount = 0;
 
         foreach ($userProducts as $product) {
@@ -82,12 +80,12 @@ class  CartController
     public function getTotalPrice()
     {
         if(session_status() === PHP_SESSION_NONE) session_start();
-        $user_id = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'];
         if (!isset($user_id)) {
             header('Location: /login');
         }
         $UserProducts = new UserProduct();
-        $userProduct = $UserProducts->getAllByUserIdWhitoutJoin($user_id);
+        $userProduct = $UserProducts->getAllByUserIdWhitoutJoin($userId);
         $totalPrice = 0;
         foreach ($userProduct as $product) {
             $amount = $product->getAmount();
@@ -101,26 +99,25 @@ class  CartController
     public function deleteCart()
     {
         if(session_status() === PHP_SESSION_NONE) session_start();
-        $user_id = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'];
         if (!isset($user_id)) {
             header('Location: /login');
         }
         $UserProducts = new UserProduct();
-        $UserProducts->deleteAllInCart($user_id);
+        $UserProducts->deleteAllInCart($userId);
     }
 
-    public function removeProduct()
+    public function removeProduct(ProductRequest $request)
     {
         if(session_status() === PHP_SESSION_NONE) session_start();
-        $user_id = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'];
         if (!isset($user_id)) {
             header('Location: /login');
         }
-        if (isset($_POST['product_id'])) {
-            $productId = $_POST['product_id'];
-        }
+        $productId = $request->getProductId();
+
         $userProducts = new UserProduct();
-        $userProducts->removeProduct($user_id, $productId);
+        $userProducts->removeProduct($userId, $productId);
         header('location: /cart');
     }
 

@@ -5,6 +5,8 @@ use Controller\UserController;
 use Controller\CartController;
 use Controller\ProductController;
 use Controller\OrderController;
+use \Request\Request;
+
 class App
 {
     private array $routes = [];
@@ -14,13 +16,17 @@ class App
         $requestUri = $_SERVER['REQUEST_URI'];
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         if (isset($this->routes[$requestUri])) {
-            if (isset($this->routes[$requestUri][$requestMethod])) {
-                $hendler =  $this->routes[$requestUri][$requestMethod];
-                $class =$hendler['class'];
-                $method =$hendler['method'];
+            $route = $this->routes[$requestUri];
 
-                $route = new $class();
-                $route->$method();
+            if (isset($this->route[$requestMethod])) {
+                $controllerClassName =  $this->route[$requestMethod]['class'];
+                $method =$this->route[$requestMethod]['method'];
+                $requestClass = $this[$method]['request'];
+                $class = new $controllerClassName();
+                $request= new $requestClass($requestUri,$requestMethod, $_POST);
+
+                return $class->$method($request);
+
 
             }
             else {
@@ -34,11 +40,17 @@ class App
 
     }
 
-    public function addRoute(string $requestUri,string $requestMethod, string $class, string $method):void
+    public function addRoute(string $requestUri,
+                             string $requestMethod,
+                             string $class,
+                             string $method,
+                             $requestClass = null):void
     {
         $this->routes[$requestUri][$requestMethod] = [
             'class' => $class,
-            'method' => $method];
+            'method' => $method,
+            'request' => $requestClass];
+
 
     }
 

@@ -8,10 +8,10 @@ class OrderProduct extends Model
     private int $amount;
     private int $id;
 
-     public  function createOrder(int $orderId,int $productId, int $amount)
+     public  function createOrder(int $orderId,Product $product, int $amount)
     {
         $stmt = $this->pdo->prepare("INSERT INTO order_products (order_id, product_id, amount) VALUES (:order_id, :product_id, :amount)");
-        $stmt->execute(['order_id' => $orderId, 'product_id' => $productId, 'amount' => $amount]);
+        $stmt->execute(['order_id' => $orderId, 'product_id' => $product->getId(), 'amount' => $amount]);
     }
 
     public function getProductId(): Product
