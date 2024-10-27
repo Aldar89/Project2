@@ -9,10 +9,7 @@ use Request\ProductRequest;
 class FavoriteController
 {
     private FavoriteProduct $favoriteProduct;
-    public function __construct()
-    {
-        $this->favoriteProduct = new FavoriteProduct();
-    }
+
     public function addFavorite()
     {
         session_start();
@@ -23,9 +20,9 @@ class FavoriteController
             $productId = $_POST['product_id'];
         }
 
-        $result = $this->favoriteProduct->getFavoriteProduct($userId, $productId);
+        $result = FavoriteProduct::getFavoriteProduct($userId, $productId);
         if (!$result){
-            $this->favoriteProduct->createFavoriteProduct($userId, $productId);
+           FavoriteProduct::createFavoriteProduct($userId, $productId);
         }
         header("location:/catalog");
 
@@ -39,7 +36,7 @@ class FavoriteController
             $userId = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
         $productId = $request->getProductId();
-        $favoriteProducts = $this->favoriteProduct->getFavoriteProductByUserId($userId);
+        $favoriteProducts =FavoriteProduct::getFavoriteProductByUserId($userId);
 //        $productIds = [];
 //        foreach ($favoriteProducts as $favoriteProduct) {
 //            $productIds[] = $favoriteProduct->getProductId();
@@ -61,7 +58,7 @@ class FavoriteController
         }else { header("location: ../View/login.php"); }
         $productId = $request->getProductId();
 
-        $this->favoriteProduct->deleteFavoriteProduct($userId, $productId);
+        FavoriteProduct::deleteFavoriteProduct($userId, $productId);
         header("location:/catalog");
 
     }

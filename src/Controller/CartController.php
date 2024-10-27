@@ -1,5 +1,6 @@
 <?php
 namespace Controller;
+use Model\User;
 use Model\UserProduct;
 use Request\ProductRequest;
 
@@ -8,10 +9,7 @@ use Request\ProductRequest;
 class  CartController
 {
     private UserProduct $userProduct;
-    public function __construct()
-    {
-        $this->userProduct = new UserProduct();
-    }
+
     public function getAddProduct()
     {
         require_once './../View/get_add-product.php';
@@ -27,13 +25,13 @@ class  CartController
         $amount = $request->getAmount();
 
 
-        $result = $this->userProduct->getByUserIdAndByProductId($userId, $productId);
+        $result = UserProduct::getByUserIdAndByProductId($userId, $productId);
         if ($result) {
             $amount =$amount + $result['amount'];
-           $this->userProduct->addProduct($userId, $productId, $amount);
+          UserProduct::addProduct($userId, $productId, $amount);
 
         } else {
-           $this->userProduct->create($userId, $productId, $amount);
+           UserProduct::create($userId, $productId, $amount);
 
         }
         header('location: /catalog');
@@ -48,9 +46,9 @@ class  CartController
         }else { header("location: ../View/login.php"); }
 
 
-        $userProducts = $this->userProduct->getAllByUserIdWhitoutJoin($userId);
-        $allAmount = $this->getAllCount();
-        $totalPrice = $this->getTotalPrice();
+        $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
+        $allAmount = self::getAllCount();
+        $totalPrice = self::getTotalPrice();
 
         require_once './../View/cart.php';
     }
@@ -66,7 +64,7 @@ class  CartController
         }
 
 
-       $userProducts = $this->userProduct->getAllByUserIdWhitoutJoin($userId);
+       $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
         $allAmount = 0;
 
         foreach ($userProducts as $product) {
@@ -84,8 +82,8 @@ class  CartController
         if (!isset($user_id)) {
             header('Location: /login');
         }
-        $UserProducts = new UserProduct();
-        $userProduct = $UserProducts->getAllByUserIdWhitoutJoin($userId);
+
+        $userProduct = UserProduct::getAllByUserIdWhitoutJoin($userId);
         $totalPrice = 0;
         foreach ($userProduct as $product) {
             $amount = $product->getAmount();
@@ -103,8 +101,8 @@ class  CartController
         if (!isset($user_id)) {
             header('Location: /login');
         }
-        $UserProducts = new UserProduct();
-        $UserProducts->deleteAllInCart($userId);
+
+        UserProduct::deleteAllInCart($userId);
     }
 
     public function removeProduct(ProductRequest $request)
@@ -116,8 +114,8 @@ class  CartController
         }
         $productId = $request->getProductId();
 
-        $userProducts = new UserProduct();
-        $userProducts->removeProduct($userId, $productId);
+
+        UserProduct::removeProduct($userId, $productId);
         header('location: /cart');
     }
 

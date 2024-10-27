@@ -5,11 +5,12 @@ use PDO;
 
 class Model
 {
-    protected PDO $pdo;
+    private static PDO $pdo;
 
-    public  function __construct()
+    public  static function getPdo(): PDO
     {
-       $this->pdo = new PDO("pgsql:host=postgres; port=5432; dbname=mydb", 'user', 'pwd');
+       self::$pdo = new PDO("pgsql:host=postgres; port=5432; dbname=mydb", 'user', 'pwd');
+       return self::$pdo;
     }
 
 

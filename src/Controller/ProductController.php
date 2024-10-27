@@ -17,8 +17,8 @@ class ProductController
           if (!isset($user_id)) {
             header('Location: /login');
         }
-        $product = new Product();
-        $products = $product->getAll();
+
+        $products = Product::getAll();
         $cart = new CartController();
         $allAmount = $cart->getAllCount();
         require_once './../View/catalog2.php';

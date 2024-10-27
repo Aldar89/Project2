@@ -12,35 +12,36 @@ class Order extends Model
     private string $date;
 
 
-    public function create(int $userId,string $firstName,string $lastName,string $address,string $phone, $date)
+    public static function create(int $userId,string $firstName,string $lastName,string $address,string $phone, $date)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO orders (user_id, first_name, last_name, address,phone,date) VALUES (:user_id, :first_name, :last_name, :address, :phone,  :date)");
+        $stmt = self::getPdo()->prepare("INSERT INTO orders (user_id, first_name, last_name, address,phone,date) VALUES (:user_id, :first_name, :last_name, :address, :phone,  :date)");
         $stmt->execute(array('user_id'=> $userId, 'first_name'=>$firstName, 'last_name'=> $lastName, 'address'=> $address, 'phone'=>$phone,'date'=>$date ));
 
     }
 
-    public function getOrderId(int $userId):?Order
+    public static function getOrderId(int $userId):?Order
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE user_id = :user_id ORDER BY id DESC");
+        $stmt = self::getPdo()->prepare("SELECT * FROM orders WHERE user_id = :user_id ORDER BY id DESC");
         $stmt->execute(array('user_id'=> $userId));
         $data = $stmt->fetch();
         if ($data === false) {
             return null;
         }
-        $order = $this->hydrate($data);
+        $order = self::hydrate($data);
         return $order;
     }
 
-    private function hydrate(array $data):self
+    private static function hydrate(array $data):self
     {
-        $this->id = $data['id'];
-        $this->firstName = $data['first_name'];
-        $this->lastName = $data['last_name'];
-        $this->address = $data['address'];
-        $this->phone = $data['phone'];
-        $this->date = $data['date'];
-        return $this;
+        $obj = new self();
+        $obj->id = $data['id'];
+        $obj->firstName = $data['first_name'];
+        $obj->lastName = $data['last_name'];
+        $obj->address = $data['address'];
+        $obj->phone = $data['phone'];
+        $obj->date = $data['date'];
+        return $obj;
     }
 
     public function getId(): int

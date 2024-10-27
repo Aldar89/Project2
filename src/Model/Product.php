@@ -10,30 +10,30 @@ class Product extends Model
     private float $price;
 
 
-    public  function getAll():?array
+    public static function getAll():?array
     {
-        $stmt = $this->pdo->query("SELECT * FROM products ");
+        $stmt = self::getPdo()->query("SELECT * FROM products ");
         $products = $stmt->fetchAll();
 
         foreach ($products as &$product) {
-            $product = $this->hydrate($product);
+            $product = self::hydrate($product);
         }
         return $products;
     }
 
-    public function getProductById($id):?Product
+    public static function getProductById($id):?Product
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id = :id");
+        $stmt = self::getPdo()->prepare("SELECT * FROM products WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $result = $stmt->fetch();
         if ($result === false) {
             return null;
         }
-        $product = $this->hydrate($result);
+        $product = self::hydrate($result);
 
         return $product;
     }
-    private function hydrate(array $data): self
+    private static function hydrate(array $data): self
     {
         $obj = new self();
         $obj->id = $data['id'];

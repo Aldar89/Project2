@@ -16,22 +16,14 @@ class OrderController
     private CartController $cartModel;
     private OrderProduct $orderProductModel;
 
-    public function __construct()
-    {
-        $this->userProductModel = new UserProduct();
-        $this->cartModel = new CartController();
-        $this->orderModel = new Order();
-        $this->orderProductModel = new OrderProduct();
-    }
-
-    public function getRegistrateOrder()
+        public function getRegistrateOrder()
     {
         session_start();
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
         }else { header("location: ../View/login.php"); }
 
-        $userProducts = $this->userProductModel->getAllByUserId($user_id);
+        $userProducts = UserProduct::getAllByUserId($user_id);
 
         $totalPrice = $this->cartModel->getTotalPrice();
 
@@ -58,17 +50,17 @@ class OrderController
             $this->orderModel->create($userId, $firstName, $lastName, $address, $phone, $date);
 
 
-            $userProducts = $this->userProductModel->getAllByUserId($userId);
-            $orderFromDb = $this->orderModel->getOrderId( $userId);
+            $userProducts = UserProduct::getAllByUserId($userId);
+            $orderFromDb = Order::getOrderId( $userId);
             $orderId = $orderFromDb->getId();
 
 
             foreach ($userProducts as $userProduct) {
-                $orderProduct = new OrderProduct();
 
-                $product = $this->userProductModel->getProduct();
-                $amount = $this->userProductModel->getAmount();
-                $orderProduct->createOrder($orderId, $product, $amount);
+
+                $product = UserProduct::getProduct();
+                $amount = UserProduct::getAmount();
+                OrderProduct::createOrder($orderId, $product, $amount);
 
             }
 

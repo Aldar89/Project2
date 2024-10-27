@@ -10,10 +10,6 @@ class UserController
 {
      private User $user;
 
-     public function __construct()
-     {
-         $this->user = new User;
-     }
 
     public function getRegistrate()
     {
@@ -33,7 +29,7 @@ class UserController
         if (empty($errors)) {
 
 
-            $this->user->create($name,$email,$password);
+           User::create($name,$email,$password);
 
             header('Location: /login');
         }
@@ -52,7 +48,7 @@ class UserController
 
         if (empty($errors)) {
 
-            $data = $this->user->getLogin($request->getLogin());
+            $data = User::getLogin($request->getLogin());
 
             if ($data === null){
                 $errors['login'] = 'Пользователя не существует';
