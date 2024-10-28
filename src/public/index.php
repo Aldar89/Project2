@@ -18,21 +18,20 @@ $path = dirname($path);
 Autoloader::registrate($path);
 
 $app = new App();
-$app->addRoute('/login','GET', UserController::class, 'getLogin');
-$app->addRoute('/login','POST', UserController::class, 'login', LoginRequest::class );
-$app->addRoute('/registrate','GET', UserController::class, 'getRegistrate');
-$app->addRoute('/registrate','POST', UserController::class, 'registrate', RegistrateRequest::class );
-$app->addRoute('/catalog','GET', ProductController::class, 'getAll');
-$app->addRoute('/add-product', 'GET', CartController::class, 'getAddProduct');
-$app->addRoute('/add-product', 'POST', CartController::class, 'addProduct', ProductRequest::class) ;
-$app->addRoute('/remove-product', 'POST', CartController::class, 'removeProduct', ProductRequest::class) ;
-$app->addRoute('/cart','GET', CartController::class, 'getAll');
-$app->addRoute('/logout','GET', UserController::class, 'logout');
-$app->addRoute('/registrateOrder','GET', OrderController::class, 'getRegistrateOrder');
-$app->addRoute('/registrateOrder','POST', OrderController::class, 'registrateOrder', OrderRequest::class);
-$app->addRoute('/add-favorite','POST', FavoriteController::class, 'addFavorite', ProductRequest::class );
-$app->addRoute('/favorite','GET', FavoriteController::class, 'getFavorite');
-$app->addRoute('/remove-favorite','POST', FavoriteController::class, 'removeFavorite', ProductRequest::class );
+$app->postRoute('/login', UserController::class, 'login', LoginRequest::class );
+$app->getRoute('/registrate', UserController::class, 'getRegistrate');
+$app->postRoute('/registrate', UserController::class, 'registrate', RegistrateRequest::class );
+$app->getRoute('/catalog', ProductController::class, 'getAll');
+$app->getRoute('/add-product',  CartController::class, 'getAddProduct');
+$app->postRoute('/add-product',  CartController::class, 'addProduct', ProductRequest::class) ;
+$app->postRoute('/remove-product',  CartController::class, 'removeProduct', ProductRequest::class) ;
+$app->getRoute('/cart',CartController::class, 'getAll');
+$app->getRoute('/logout', UserController::class, 'logout');
+$app->getRoute('/registrateOrder', OrderController::class, 'getRegistrateOrder');
+$app->postRoute('/registrateOrder', OrderController::class, 'registrateOrder', OrderRequest::class);
+$app->postRoute('/add-favorite', FavoriteController::class, 'addFavorite', ProductRequest::class );
+$app->getRoute('/favorite', FavoriteController::class, 'getFavorite');
+$app->postRoute('/remove-favorite', FavoriteController::class, 'removeFavorite', ProductRequest::class );
 
 $app->run();
 

@@ -48,15 +48,21 @@ class UserController
 
         if (empty($errors)) {
 
-            $data = User::getLogin($request->getLogin());
+            $login = $request->getLogin();
+            $password = $request->getPassword();
+            $data = User::getLogin($login);
+            $passwordFromDB = $data->getPassword();
 
             if ($data === null){
                 $errors['login'] = 'Пользователя не существует';
-            } elseif     (password_verify($request->getPassword(),$data->getPassword())){
+            } elseif     (password_verify($password,$passwordFromDB)){
 //         setcookie('user_id', $data['id'], time() + 3600);
                 session_start();
-                $_SESSION['user_id'] = $data->getId();
-                $user_id = $_SESSION['user_id'];
+                $id = $data->getId();
+                $_SESSION['user_id'] = $id;
+
+                $userId = $_SESSION['user_id'];
+
                 header('Location: /catalog');
             } else {
                 $errors['password'] = 'Пароль указан неправильно';

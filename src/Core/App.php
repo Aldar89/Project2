@@ -18,16 +18,15 @@ class App
         if (isset($this->routes[$requestUri])) {
             $route = $this->routes[$requestUri];
 
-            if (isset($this->route[$requestMethod])) {
-                $controllerClassName =  $this->route[$requestMethod]['class'];
-                $method =$this->route[$requestMethod]['method'];
-                $requestClass = $this[$method]['request'];
+            if (isset($route[$requestMethod])) {
+                $controllerClassName =  $route[$requestMethod]['class'];
+                $method =$route[$requestMethod]['method'];
+                $requestClass = $route[$requestMethod]['request'];
                 $class = new $controllerClassName();
-                $request= new $requestClass($requestUri,$requestMethod, $_POST);
+
+                $request = $requestClass ? new $requestClass($requestUri, $requestMethod, $_POST): null;
 
                 return $class->$method($request);
-
-
             }
             else {
                 echo "Метод $requestMethod не поддерживается для адреса $requestUri";
@@ -53,6 +52,24 @@ class App
 
 
     }
+
+    public function getRoute(string $route, string $className, string $methodName, $requestClass = null)
+    {
+        $this->routes[$route]['GET']= [
+            'class' => $className,
+            'method' => $methodName,
+            'request' => $requestClass
+        ];
+    }
+    public function postRoute(string $route, string $className, string $methodName, $requestClass = null)
+    {
+        $this->routes[$route]['POST']= [
+            'class' => $className,
+            'method' => $methodName,
+            'request' => $requestClass
+        ];
+    }
+
 
 
 
