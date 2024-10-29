@@ -24,9 +24,12 @@ class App
                 $requestClass = $route[$requestMethod]['request'];
                 $class = new $controllerClassName();
 
-                $request = $requestClass ? new $requestClass($requestUri, $requestMethod, $_POST): null;
-
-                return $class->$method($request);
+                if (empty($requestClass)){
+                    return $class->$method();
+                }else{
+                    $request = new $requestClass($requestUri, $requestMethod, $_POST);
+                    return $class->$method($request);
+                }
             }
             else {
                 echo "Метод $requestMethod не поддерживается для адреса $requestUri";

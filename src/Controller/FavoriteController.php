@@ -5,20 +5,30 @@ use Model\FavoriteProduct;
 use Model\UserProduct;
 use Model\Product;
 use Request\ProductRequest;
+use Request\Request;
+use Service\AuthenticationSession;
 
 class FavoriteController
 {
     private FavoriteProduct $favoriteProduct;
+    private AuthenticationSession $authenticationSession;
 
-    public function addFavorite()
+    public function __construct(AuthenticationSession $authenticationSession)
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        $this->authenticationSession = $authenticationSession;
+    }
+
+    public function addFavorite(ProductRequest $request)
+    {
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
+
         if (isset($_POST['product_id'])) {
             $productId = $_POST['product_id'];
         }
+        $productId = $request->getProductId();
 
         $result = FavoriteProduct::getFavoriteProduct($userId, $productId);
         if (!$result){
@@ -31,10 +41,11 @@ class FavoriteController
 
     public function getFavorite(ProductRequest $request)
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
+
         $productId = $request->getProductId();
         $favoriteProducts =FavoriteProduct::getFavoriteProductByUserId($userId);
 //        $productIds = [];
@@ -52,10 +63,11 @@ class FavoriteController
     }
 
     public function removeFavorite(ProductRequest $request){
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
+
         $productId = $request->getProductId();
 
         FavoriteProduct::deleteFavoriteProduct($userId, $productId);

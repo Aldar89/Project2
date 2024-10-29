@@ -3,12 +3,20 @@ namespace Controller;
 use Model\User;
 use Model\UserProduct;
 use Request\ProductRequest;
+use Service\CartService;
+use Service\AuthenticationSession;
 
 //require_once './../Model/UserProduct.php';
 
 class  CartController
 {
     private UserProduct $userProduct;
+    private AuthenticationSession $authenticationSession;
+
+    public function __construct( AuthenticationSession $authenticationSession)
+    {
+        $this->authenticationSession = $authenticationSession;
+    }
 
     public function getAddProduct()
     {
@@ -16,102 +24,75 @@ class  CartController
     }
     public function addProduct(ProductRequest $request)
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
 
         $productId = $request->getProductId();
         $amount = $request->getAmount();
 
+        CartService::getProductInaCart($userId, $productId, $amount);
 
-        $result = UserProduct::getByUserIdAndByProductId($userId, $productId);
-        if ($result) {
-            $amount =$amount + $result['amount'];
-          UserProduct::addProduct($userId, $productId, $amount);
-
-        } else {
-           UserProduct::create($userId, $productId, $amount);
-
-        }
         header('location: /catalog');
 
     }
 
     public function getAll()
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
 
 
         $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
-        $allAmount = self::getAllCount();
-        $totalPrice = self::getTotalPrice();
+        $allAmount = CartService::getAllAmount($userId);
+        $totalPrice = CartService::getTotalPrice($userId);
 
         require_once './../View/cart.php';
     }
 
 
 
-    public function getAllCount()
-    {
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        $userId = $_SESSION['user_id'];
-        if (!isset($user_id)) {
-            header('Location: /login');
-        }
+//    public  function getAllCount()
+//    {
+//        if(session_status() === PHP_SESSION_NONE) session_start();
+//        $userId = $_SESSION['user_id'];
+//        if (!isset($user_id)) {
+//            header('Location: /login');
+//        }
+//
+//        CartService::getAllAmount($userId);
+//    }
 
-
-       $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
-        $allAmount = 0;
-
-        foreach ($userProducts as $product) {
-            $amount = $product->getAmount();
-            $allAmount +=$amount;
-        }
-        return $allAmount;
-
-    }
-
-    public function getTotalPrice()
-    {
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        $userId = $_SESSION['user_id'];
-        if (!isset($user_id)) {
-            header('Location: /login');
-        }
-
-        $userProduct = UserProduct::getAllByUserIdWhitoutJoin($userId);
-        $totalPrice = 0;
-        foreach ($userProduct as $product) {
-            $amount = $product->getAmount();
-            $price  = $product->getProduct()->getPrice();
-            $totalPrice +=$amount*$price;
-        }
-        return $totalPrice;
-
-    }
+//    public function getTotalPrice()
+//    {
+//        if(session_status() === PHP_SESSION_NONE) session_start();
+//        $userId = $_SESSION['user_id'];
+//        if (!isset($user_id)) {
+//            header('Location: /login');
+//        }
+//
+//       CartService::getTotalPrice($userId);
+//    }
 
     public function deleteCart()
     {
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        $userId = $_SESSION['user_id'];
-        if (!isset($user_id)) {
-            header('Location: /login');
-        }
+        if (!$this->authenticationSession->check()) {
+        header('Location: /login');
+    }
+        $userId = $this->authenticationSession->getUser()->getId();
 
         UserProduct::deleteAllInCart($userId);
     }
 
     public function removeProduct(ProductRequest $request)
     {
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        $userId = $_SESSION['user_id'];
-        if (!isset($user_id)) {
+        if (!$this->authenticationSession->check()) {
             header('Location: /login');
         }
+        $userId = $this->authenticationSession->getUser()->getId();
         $productId = $request->getProductId();
 
 

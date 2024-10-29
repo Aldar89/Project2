@@ -6,36 +6,48 @@ use Model\UserProduct;
 use Model\OrderProduct;
 use Controller\CartController;
 use Request\OrderRequest;
+use Service\CartService;
+use Service\OrderService;
+use Service\AuthenticationSession;
+
 
 
 class OrderController
+
 
 {
     private Order $orderModel;
     private UserProduct $userProductModel;
     private CartController $cartModel;
     private OrderProduct $orderProductModel;
+    private AuthenticationSession $authenticationSession;
+
+    public function __construct(AuthenticationSession $authenticationSession)
+    {
+        $this->authenticationSession = $authenticationSession;
+    }
 
         public function getRegistrateOrder()
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
 
-        $userProducts = UserProduct::getAllByUserId($user_id);
+        $userProducts = UserProduct::getAllByUserId($userId);
 
-        $totalPrice = $this->cartModel->getTotalPrice();
+        $totalPrice = CartService::getTotalPrice($userId);
+
 
         require_once './../View/get_registrationOrder.php';
     }
 
     public function registrateOrder(OrderRequest $request)
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
         $errors = $request->validate();
         if (empty($errors))
         {
@@ -49,20 +61,7 @@ class OrderController
 
             $this->orderModel->create($userId, $firstName, $lastName, $address, $phone, $date);
 
-
-            $userProducts = UserProduct::getAllByUserId($userId);
-            $orderFromDb = Order::getOrderId( $userId);
-            $orderId = $orderFromDb->getId();
-
-
-            foreach ($userProducts as $userProduct) {
-
-
-                $product = UserProduct::getProduct();
-                $amount = UserProduct::getAmount();
-                OrderProduct::createOrder($orderId, $product, $amount);
-
-            }
+            OrderService::addProductInOrder($userId);
 
             $this->cartModel->deleteCart();
                 header("location: /catalog");

@@ -1,17 +1,22 @@
 <?php
 namespace Controller;
 use Model\Product;
+use Service\AuthenticationSession;
 //require_once './../Model/Product.php';
 //require_once './../Controller/CartController.php';
 class ProductController
 {
+    public function __construct(AuthenticationSession $authenticationSession)
+    {
+        $this->authenticationSession = $authenticationSession;
+    }
 
     public function getAll()
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-        }else { header("location: ../View/login.php"); }
+        if (!$this->authenticationSession->check()) {
+            header('Location: /login');
+        }
+        $userId = $this->authenticationSession->getUser()->getId();
 
         $products = Product::getAll();
         $cart = new CartController();

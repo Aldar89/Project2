@@ -18,6 +18,7 @@ $path = dirname($path);
 Autoloader::registrate($path);
 
 $app = new App();
+$app->getRoute('/Login', UserController::class . 'getLogin');
 $app->postRoute('/login', UserController::class, 'login', LoginRequest::class );
 $app->getRoute('/registrate', UserController::class, 'getRegistrate');
 $app->postRoute('/registrate', UserController::class, 'registrate', RegistrateRequest::class );
