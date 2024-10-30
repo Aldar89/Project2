@@ -13,6 +13,8 @@ class  CartController
     private UserProduct $userProduct;
     private AuthenticationSession $authenticationSession;
 
+    private CartService $cartService;
+
     public function __construct( AuthenticationSession $authenticationSession)
     {
         $this->authenticationSession = $authenticationSession;
@@ -32,7 +34,7 @@ class  CartController
         $productId = $request->getProductId();
         $amount = $request->getAmount();
 
-        CartService::getProductInaCart($userId, $productId, $amount);
+        $this->cartService->getProductInaCart($userId, $productId, $amount);
 
         header('location: /catalog');
 
@@ -47,8 +49,8 @@ class  CartController
 
 
         $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
-        $allAmount = CartService::getAllAmount($userId);
-        $totalPrice = CartService::getTotalPrice($userId);
+        $allAmount = $this->cartService->getAllAmount($userId);
+        $totalPrice = $this->cartService->getTotalPrice($userId);
 
         require_once './../View/cart.php';
     }

@@ -6,7 +6,7 @@ use Model\UserProduct;
 
 class CartService
 {
-    public static function getProductInaCart($userId, $productId, $amount)
+    public  function getProductInaCart($userId, $productId, $amount)
     {
         $result = UserProduct::getByUserIdAndByProductId($userId, $productId);
 
@@ -19,7 +19,7 @@ class CartService
         }
     }
 
-    public static function getAllAmount($userId):int
+    public  function getAllAmount($userId):int
     {
         $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
         $allAmount = 0;
@@ -30,7 +30,7 @@ class CartService
         }
         return $allAmount;
     }
-    public static function getTotalPrice($userId):float
+    public function getTotalPrice($userId):float
     {
         $userProduct = UserProduct::getAllByUserIdWhitoutJoin($userId);
         $totalPrice = 0;

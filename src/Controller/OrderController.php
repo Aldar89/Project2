@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller;
+use DTO\CreateOrderDTO;
 use Model\Order;
 use Model\UserProduct;
 use Model\OrderProduct;
@@ -21,6 +22,9 @@ class OrderController
     private CartController $cartModel;
     private OrderProduct $orderProductModel;
     private AuthenticationSession $authenticationSession;
+    private OrderService $orderService;
+    private CartService $cartService;
+    private CreateOrderDTO $orderDTO;
 
     public function __construct(AuthenticationSession $authenticationSession)
     {
@@ -36,7 +40,7 @@ class OrderController
 
         $userProducts = UserProduct::getAllByUserId($userId);
 
-        $totalPrice = CartService::getTotalPrice($userId);
+        $totalPrice = $this->cartService->getTotalPrice($userId);
 
 
         require_once './../View/get_registrationOrder.php';
@@ -58,10 +62,8 @@ class OrderController
             $address = $request->getAddress();
             $phone = $request->getPhone();
 
-
-            $this->orderModel->create($userId, $firstName, $lastName, $address, $phone, $date);
-
-            OrderService::addProductInOrder($userId);
+            $dto = new CreateOrderDTO($firstName, $lastName, $address, $phone, $date, $userId);
+            $this->orderService->create($dto);
 
             $this->cartModel->deleteCart();
                 header("location: /catalog");

@@ -2,10 +2,12 @@
 namespace Controller;
 use Model\Product;
 use Service\AuthenticationSession;
+use Service\CartService;
 //require_once './../Model/Product.php';
 //require_once './../Controller/CartController.php';
 class ProductController
 {
+    private AuthenticationSession $authenticationSession;
     public function __construct(AuthenticationSession $authenticationSession)
     {
         $this->authenticationSession = $authenticationSession;
@@ -19,8 +21,8 @@ class ProductController
         $userId = $this->authenticationSession->getUser()->getId();
 
         $products = Product::getAll();
-        $cart = new CartController();
-        $allAmount = $cart->getAllCount();
+       
+        $allAmount = CartService::getAllAmount($userId);
         require_once './../View/catalog2.php';
     }
 }

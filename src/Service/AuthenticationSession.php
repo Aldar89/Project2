@@ -36,7 +36,7 @@ class AuthenticationSession
         }
         if ($this->check()){
             $userId = $_SESSION['user_id'];
-            return $user = User::getById($userId);
+            return User::getById($userId);
         } else {
             return null;
         }
