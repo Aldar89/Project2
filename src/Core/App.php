@@ -6,6 +6,7 @@ use Controller\CartController;
 use Controller\ProductController;
 use Controller\OrderController;
 use http\Client\Request;
+use Service\AuthenticationSession;
 
 class App
 {
@@ -22,7 +23,8 @@ class App
                 $controllerClassName =  $route[$requestMethod]['class'];
                 $method =$route[$requestMethod]['method'];
                 $requestClass = $route[$requestMethod]['request'];
-                $class = new $controllerClassName();
+                $authService = new AuthenticationSession();
+                $class = new $controllerClassName($authService);
 
                 if (empty($requestClass)){
                     return $class->$method();

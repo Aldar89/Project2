@@ -29,6 +29,9 @@ class OrderController
     public function __construct(AuthenticationSession $authenticationSession)
     {
         $this->authenticationSession = $authenticationSession;
+        $this->cartService = new CartService();
+        $this->orderService = new OrderService();
+
     }
 
         public function getRegistrateOrder()

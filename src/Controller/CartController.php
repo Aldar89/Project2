@@ -18,6 +18,7 @@ class  CartController
     public function __construct( AuthenticationSession $authenticationSession)
     {
         $this->authenticationSession = $authenticationSession;
+        $this->cartService = new CartService();
     }
 
     public function getAddProduct()
@@ -47,10 +48,10 @@ class  CartController
         }
         $userId = $this->authenticationSession->getUser()->getId();
 
-
+        $cartService = new CartService();
         $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
-        $allAmount = $this->cartService->getAllAmount($userId);
-        $totalPrice = $this->cartService->getTotalPrice($userId);
+        $allAmount = $cartService->getAllAmount($userId);
+        $totalPrice = $cartService->getTotalPrice($userId);
 
         require_once './../View/cart.php';
     }

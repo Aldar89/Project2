@@ -39,26 +39,25 @@ class FavoriteController
 
     }
 
-    public function getFavorite(ProductRequest $request)
+    public function getFavorite()
     {
         if (!$this->authenticationSession->check()) {
             header('Location: /login');
         }
         $userId = $this->authenticationSession->getUser()->getId();
 
-        $productId = $request->getProductId();
-        $favoriteProducts =FavoriteProduct::getFavoriteProductByUserId($userId);
-//        $productIds = [];
-//        foreach ($favoriteProducts as $favoriteProduct) {
-//            $productIds[] = $favoriteProduct->getProductId();
-//        }
-//        $products =[];
-//
-//        foreach ($productIds as $productId) {
-//            $product = new Product();
-//            $id = $productId;
-//            $products[] = $product->getProductById($id);
-//        }
+        $favoriteProducts = FavoriteProduct::getFavoriteProductByUserId($userId);
+        $productIds = [];
+        foreach ($favoriteProducts as $favoriteProduct) {
+            $productIds[] = $favoriteProduct->getId();
+        }
+        $products =[];
+
+        foreach ($productIds as $productId) {
+            $product = new Product();
+            $id = $productId;
+            $products[] = $product->getProductById($id);
+        }
         require "./../View/favorite.php";
     }
 

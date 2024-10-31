@@ -11,6 +11,7 @@ class ProductController
     public function __construct(AuthenticationSession $authenticationSession)
     {
         $this->authenticationSession = $authenticationSession;
+
     }
 
     public function getAll()
@@ -21,8 +22,9 @@ class ProductController
         $userId = $this->authenticationSession->getUser()->getId();
 
         $products = Product::getAll();
+        $cartService = new CartService();
        
-        $allAmount = CartService::getAllAmount($userId);
+        $allAmount = $cartService->getAllAmount($userId);
         require_once './../View/catalog2.php';
     }
 }
