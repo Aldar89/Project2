@@ -51,7 +51,7 @@ class UserController
             $login = $request->getLogin();
             $password = $request->getPassword();
             $data = User::getLogin($login);
-            $passwordFromDB = $data->getPassword();
+            $passwordFromDB = User::getLogin($login)->getPassword();
 
             if ($data === null){
                 $errors['login'] = 'Пользователя не существует';

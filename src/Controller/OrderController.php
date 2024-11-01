@@ -10,7 +10,7 @@ use Request\OrderRequest;
 use Service\CartService;
 use Service\OrderService;
 use Service\AuthenticationSession;
-
+use test\Cart;
 
 
 class OrderController
@@ -31,7 +31,7 @@ class OrderController
         $this->authenticationSession = $authenticationSession;
         $this->cartService = new CartService();
         $this->orderService = new OrderService();
-
+//        $this->cartModel = new CartController();
     }
 
         public function getRegistrateOrder()
@@ -68,7 +68,7 @@ class OrderController
             $dto = new CreateOrderDTO($firstName, $lastName, $address, $phone, $date, $userId);
             $this->orderService->create($dto);
 
-            $this->cartModel->deleteCart();
+            $this->cartService->deleteCart($userId);
                 header("location: /catalog");
 
         }

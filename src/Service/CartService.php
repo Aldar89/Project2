@@ -2,6 +2,7 @@
 
 namespace Service;
 
+use Model\User;
 use Model\UserProduct;
 
 class CartService
@@ -11,7 +12,7 @@ class CartService
         $result = UserProduct::getByUserIdAndByProductId($userId, $productId);
 
         if ($result) {
-            $amount = $amount + $result['amount'];
+            $amount = $amount + $result->getAmount();
             UserProduct::addProduct($userId, $productId, $amount);
 
         } else {
@@ -41,5 +42,9 @@ class CartService
         }
         return $totalPrice;
 
+    }
+    public function deleteCart($userId)
+    {
+        UserProduct::deleteAllInCart($userId);
     }
 }

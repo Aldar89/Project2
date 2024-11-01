@@ -34,7 +34,7 @@ class User extends Model
         return self::hydrate($data);
     }
 
-    public static function getLogin(string $login):?User
+    public static function  getLogin(string $login):?User
     {
         $stmt = self::getPdo()->prepare("SELECT * FROM users WHERE email = :login");
         $stmt->execute(['login' => $login]);

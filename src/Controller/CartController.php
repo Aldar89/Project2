@@ -80,15 +80,7 @@ class  CartController
 //       CartService::getTotalPrice($userId);
 //    }
 
-    public function deleteCart()
-    {
-        if (!$this->authenticationSession->check()) {
-        header('Location: /login');
-    }
-        $userId = $this->authenticationSession->getUser()->getId();
 
-        UserProduct::deleteAllInCart($userId);
-    }
 
     public function removeProduct(ProductRequest $request)
     {

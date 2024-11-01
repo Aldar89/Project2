@@ -7,13 +7,10 @@ use Model\OrderProduct;
 use Model\UserProduct;
 class OrderService
 {
-    public function __construct(private Order $order, private UserProduct $userProduct)
-    {
 
-    }
    public function create (CreateOrderDTO $orderDTO)
     {
-        $this->order->create($orderDTO->getUserId(),$orderDTO->getFirstName(),
+        Order::create($orderDTO->getUserId(),$orderDTO->getFirstName(),
             $orderDTO->getLastName(),
             $orderDTO->getAddress(),
             $orderDTO->getPhone(),
