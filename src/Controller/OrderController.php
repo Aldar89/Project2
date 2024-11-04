@@ -66,9 +66,9 @@ class OrderController
             $phone = $request->getPhone();
 
             $dto = new CreateOrderDTO($firstName, $lastName, $address, $phone, $date, $userId);
-            $this->orderService->create($dto);
+            $this->orderService->create($dto, $userId);
 
-            $this->cartService->deleteCart($userId);
+
                 header("location: /catalog");
 
         }

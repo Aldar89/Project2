@@ -5,11 +5,13 @@ use DTO\CreateOrderDTO;
 use Model\Order;
 use Model\OrderProduct;
 use Model\UserProduct;
+use Model\Model;
 class OrderService
 {
 
-   public function create (CreateOrderDTO $orderDTO)
+   public function create (CreateOrderDTO $orderDTO, $userId)
     {
+        Model::getPdo()->beginTransaction();
         Order::create($orderDTO->getUserId(),$orderDTO->getFirstName(),
             $orderDTO->getLastName(),
             $orderDTO->getAddress(),
@@ -19,15 +21,23 @@ class OrderService
         $orderFromDb = Order::getOrderId( $orderDTO->getUserId());
         $orderId = $orderFromDb->getId();
 
+        try {
+            foreach ($userProducts as $userProduct) {
 
-        foreach ($userProducts as $userProduct) {
 
+                $product = $userProduct->getProduct();
+                $amount = $userProduct->getAmount();
+                OrderProduct::createOrder($orderId, $product, $amount);
 
-            $product = $userProduct->getProduct();
-            $amount = $userProduct->getAmount();
-            OrderProduct::createOrder($orderId, $product, $amount);
+            }
 
+            UserProduct::deleteAllInCart($orderDTO->getUserId());
+        } catch (\PDOException $exception) {
+            Model::getPdo()->rollBack();
+            throw $exception;
         }
+        Model::getPdo()->commit();
+
     }
 
 }
