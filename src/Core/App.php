@@ -5,12 +5,20 @@ use Controller\UserController;
 use Controller\CartController;
 use Controller\ProductController;
 use Controller\OrderController;
+use DateTime;
 use http\Client\Request;
 use Service\AuthenticationSession;
+use Service\LoggerService;
 
 class App
 {
     private array $routes = [];
+    private LoggerService $loggerService;
+
+    private function __construct()
+    {
+        $this->loggerService = new LoggerService();
+    }
 
     public function run()
     {
@@ -24,8 +32,29 @@ class App
                 $method =$route[$requestMethod]['method'];
                 $requestClass = $route[$requestMethod]['request'];
                 $authService = new AuthenticationSession();
+
                 $class = new $controllerClassName($authService);
 
+                try {
+                    if (empty($requestClass)){
+                    return $class->$method();
+                }else{
+                    $request = new $requestClass($requestUri, $requestMethod, $_POST);
+                    return $class->$method($request);
+                }
+                } catch (\Throwable $exception) {
+                    $date = new DateTime();
+                    $error = [
+                    'message' => $exception->getMessage(),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine()
+                    ];
+
+                    $this->loggerService->error($error);
+
+                    http_response_code(500);
+                    require_once './../View/500.php';
+                }
                 if (empty($requestClass)){
                     return $class->$method();
                 }else{

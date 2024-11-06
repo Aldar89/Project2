@@ -9,8 +9,12 @@ class Model
 
     public  static function getPdo(): PDO
     {
-       self::$pdo = new PDO("pgsql:host=postgres; port=5432; dbname=mydb", 'user', 'pwd');
-       return self::$pdo;
+        if (!isset(self::$pdo)) {
+            self::$pdo = new PDO("pgsql:host=postgres; port=5432; dbname=mydb", 'user', 'pwd');
+            return self::$pdo;
+        }
+        return self::$pdo;
+
     }
 
 
