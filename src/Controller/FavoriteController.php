@@ -2,28 +2,27 @@
 
 namespace Controller;
 use Model\FavoriteProduct;
-use Model\UserProduct;
 use Model\Product;
 use Request\ProductRequest;
-use Request\Request;
-use Service\AuthenticationSession;
+use Service\Authentication\AuthenticationSession;
+use Service\Authentication\AuthServiceInterface;
 
 class FavoriteController
 {
-    private FavoriteProduct $favoriteProduct;
-    private AuthenticationSession $authenticationSession;
 
-    public function __construct(AuthenticationSession $authenticationSession)
+    private AuthServiceInterface $authService;
+
+    public function __construct(AuthServiceInterface $authService)
     {
-        $this->authenticationSession = $authenticationSession;
+        $this->authService = $authService;
     }
 
     public function addFavorite(ProductRequest $request)
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
 
         if (isset($_POST['product_id'])) {
             $productId = $_POST['product_id'];
@@ -41,10 +40,10 @@ class FavoriteController
 
     public function getFavorite()
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
 
         $favoriteProducts = FavoriteProduct::getFavoriteProductByUserId($userId);
         $productIds = [];
@@ -62,10 +61,10 @@ class FavoriteController
     }
 
     public function removeFavorite(ProductRequest $request){
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
 
         $productId = $request->getProductId();
 

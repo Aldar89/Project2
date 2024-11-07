@@ -1,23 +1,19 @@
 <?php
 
 namespace Core;
-use Controller\UserController;
-use Controller\CartController;
-use Controller\ProductController;
-use Controller\OrderController;
-use DateTime;
-use http\Client\Request;
-use Service\AuthenticationSession;
-use Service\LoggerService;
+use Service\Authentication\AuthenticationSession;
+use Service\CartService;
+use Service\Logger\LoggerServiceInterface;
+use Service\OrderService;
 
 class App
 {
     private array $routes = [];
-    private LoggerService $loggerService;
+    private LoggerServiceInterface $loggerService;
 
-    private function __construct()
+    public function __construct(LoggerServiceInterface $loggerService)
     {
-        $this->loggerService = new LoggerService();
+        $this->loggerService = $loggerService;
     }
 
     public function run()
@@ -32,8 +28,10 @@ class App
                 $method =$route[$requestMethod]['method'];
                 $requestClass = $route[$requestMethod]['request'];
                 $authService = new AuthenticationSession();
+                $orderService = new OrderService();
+                $carService = new CartService();
 
-                $class = new $controllerClassName($authService);
+                $class = new $controllerClassName($authService, $orderService, $carService);
 
                 try {
                     if (empty($requestClass)){
@@ -43,14 +41,13 @@ class App
                     return $class->$method($request);
                 }
                 } catch (\Throwable $exception) {
-                    $date = new DateTime();
-                    $error = [
-                    'message' => $exception->getMessage(),
-                    'file' => $exception->getFile(),
-                    'line' => $exception->getLine()
-                    ];
 
-                    $this->loggerService->error($error);
+
+                    $this->loggerService->error('Произошла ошибка при обработке ', [
+                        'message' => $exception->getMessage(),
+                        'file' => $exception->getFile(),
+                        'line' => $exception->getLine(),
+                    ]);
 
                     http_response_code(500);
                     require_once './../View/500.php';

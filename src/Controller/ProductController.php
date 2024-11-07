@@ -1,30 +1,32 @@
 <?php
 namespace Controller;
 use Model\Product;
-use Service\AuthenticationSession;
+use Service\Authentication\AuthenticationSession;
+use Service\Authentication\AuthServiceInterface;
 use Service\CartService;
+
 //require_once './../Model/Product.php';
 //require_once './../Controller/CartController.php';
 class ProductController
 {
-    private AuthenticationSession $authenticationSession;
-    public function __construct(AuthenticationSession $authenticationSession)
+    private AuthServiceInterface $authService;
+    private CartService $cartService;
+    public function __construct(AuthServiceInterface $authService, CartService $cartService)
     {
-        $this->authenticationSession = $authenticationSession;
-
+        $this->authService = $authService;
+        $this->cartService = $cartService;
     }
 
     public function getAll()
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
 
         $products = Product::getAll();
-        $cartService = new CartService();
-       
-        $allAmount = $cartService->getAllAmount($userId);
+
+        $allAmount = $this->cartService->getAllAmount($userId);
         require_once './../View/catalog2.php';
     }
 }

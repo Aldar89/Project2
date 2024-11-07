@@ -1,10 +1,10 @@
 <?php
 
-namespace Service;
+namespace Service\Authentication;
 
 use Model\User;
 
-class AuthenticationSession
+class AuthenticationSession implements AuthServiceInterface
 {
     public function check():bool
     {
@@ -42,7 +42,7 @@ class AuthenticationSession
         }
     }
 
-    public function authenticate($email, $password):?User
+    public function authenticate(string $email,string $password):?User
     {
         $user =User::getByEmail($email);
         if ($user === false) {

@@ -1,24 +1,24 @@
 <?php
 namespace Controller;
-use Model\User;
 use Model\UserProduct;
 use Request\ProductRequest;
+use Service\Authentication\AuthenticationSession;
+use Service\Authentication\AuthServiceInterface;
 use Service\CartService;
-use Service\AuthenticationSession;
 
 //require_once './../Model/UserProduct.php';
 
-class  CartController
+class  CartController extends Controller
 {
-    private UserProduct $userProduct;
-    private AuthenticationSession $authenticationSession;
+
+    private AuthServiceInterface $authService;
 
     private CartService $cartService;
 
-    public function __construct( AuthenticationSession $authenticationSession)
+    public function __construct( AuthServiceInterface $authService, CartService $cartService )
     {
-        $this->authenticationSession = $authenticationSession;
-        $this->cartService = new CartService();
+        $this->authService = $authService;
+        $this->cartService = $cartService;
     }
 
     public function getAddProduct()
@@ -27,10 +27,10 @@ class  CartController
     }
     public function addProduct(ProductRequest $request)
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
 
         $productId = $request->getProductId();
         $amount = $request->getAmount();
@@ -43,15 +43,15 @@ class  CartController
 
     public function getAll()
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
 
-        $cartService = new CartService();
+
         $userProducts = UserProduct::getAllByUserIdWhitoutJoin($userId);
-        $allAmount = $cartService->getAllAmount($userId);
-        $totalPrice = $cartService->getTotalPrice($userId);
+        $allAmount = $this->cartService->getAllAmount($userId);
+        $totalPrice = $this->cartService->getTotalPrice($userId);
 
         require_once './../View/cart.php';
     }
@@ -84,10 +84,10 @@ class  CartController
 
     public function removeProduct(ProductRequest $request)
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
         $productId = $request->getProductId();
 
 

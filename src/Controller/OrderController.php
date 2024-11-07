@@ -3,14 +3,13 @@
 namespace Controller;
 use DTO\CreateOrderDTO;
 use Model\Order;
-use Model\UserProduct;
 use Model\OrderProduct;
-use Controller\CartController;
+use Model\UserProduct;
 use Request\OrderRequest;
+use Service\Authentication\AuthenticationSession;
+use Service\Authentication\AuthServiceInterface;
 use Service\CartService;
 use Service\OrderService;
-use Service\AuthenticationSession;
-use test\Cart;
 
 
 class OrderController
@@ -21,25 +20,25 @@ class OrderController
     private UserProduct $userProductModel;
     private CartController $cartModel;
     private OrderProduct $orderProductModel;
-    private AuthenticationSession $authenticationSession;
+    private AuthServiceInterface $authService;
     private OrderService $orderService;
     private CartService $cartService;
     private CreateOrderDTO $orderDTO;
 
-    public function __construct(AuthenticationSession $authenticationSession)
+    public function __construct(AuthServiceInterface $authService, CartService $cartService, OrderService $orderService)
     {
-        $this->authenticationSession = $authenticationSession;
-        $this->cartService = new CartService();
-        $this->orderService = new OrderService();
+        $this->authService = $authService;
+        $this->cartService = $cartService;
+        $this->orderService = $orderService;
 //        $this->cartModel = new CartController();
     }
 
         public function getRegistrateOrder()
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
 
         $userProducts = UserProduct::getAllByUserId($userId);
 
@@ -51,10 +50,10 @@ class OrderController
 
     public function registrateOrder(OrderRequest $request)
     {
-        if (!$this->authenticationSession->check()) {
+        if (!$this->authService->check()) {
             header('Location: /login');
         }
-        $userId = $this->authenticationSession->getUser()->getId();
+        $userId = $this->authService->getUser()->getId();
         $errors = $request->validate();
         if (empty($errors))
         {

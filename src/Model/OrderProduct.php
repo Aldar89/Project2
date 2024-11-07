@@ -10,6 +10,7 @@ class OrderProduct extends Model
 
      public  static function createOrder(int $orderId,Product $product, int $amount)
     {
+        throw new \Exception('test exp');
         $stmt = self::getPdo()->prepare("INSERT INTO order_products (order_id, product_id, amount) VALUES (:order_id, :product_id, :amount)");
         $stmt->execute(['order_id' => $orderId, 'product_id' => $product->getId(), 'amount' => $amount]);
     }
