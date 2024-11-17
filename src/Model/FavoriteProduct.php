@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Core\Model;
+
 class FavoriteProduct extends Model
 {
     private int $id;

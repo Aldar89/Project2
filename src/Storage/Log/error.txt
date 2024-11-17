@@ -1,0 +1,207 @@
+message: Call to undefined method Closure::getRegistrateOrder()
+file: /var/www/html/src/Core/App.php
+line: 38
+2024-11-10 12:57:02
+message: Call to undefined method Closure::getAll()
+file: /var/www/html/src/Core/App.php
+line: 38
+2024-11-10 12:59:39
+message: Call to undefined method Closure::getRegistrateOrder()
+file: /var/www/html/src/Core/App.php
+line: 38
+2024-11-10 13:03:55
+message: Call to undefined method Closure::getAll()
+file: /var/www/html/src/Core/App.php
+line: 38
+2024-11-10 13:03:58
+message: Call to undefined method Closure::getAll()
+file: /var/www/html/src/Core/App.php
+line: 38
+2024-11-10 13:32:53
+message: Call to undefined method Closure::getAll()
+file: /var/www/html/src/Core/App.php
+line: 38
+2024-11-10 13:47:27
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/CartController.php
+line: 49
+2024-11-10 14:02:32
+message: test exp
+file: /var/www/html/src/Model/OrderProduct.php
+line: 13
+2024-11-10 14:05:22
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/ProductController.php
+line: 25
+2024-11-11 11:41:35
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/ProductController.php
+line: 25
+2024-11-11 11:41:51
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/ProductController.php
+line: 25
+2024-11-11 11:43:10
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/ProductController.php
+line: 25
+2024-11-11 11:45:41
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/ProductController.php
+line: 25
+2024-11-11 11:48:10
+message: Call to undefined method Model\User::getUser()
+file: /var/www/html/src/Controller/ProductCardController.php
+line: 31
+2024-11-11 13:39:19
+message: Service\GradeService::getAvarageRate(): Argument #1 ($reviews) must be of type array, null given, called in /var/www/html/src/Controller/ProductCardController.php on line 32
+file: /var/www/html/src/Service/GradeService.php
+line: 7
+2024-11-11 13:42:36
+message: Failed opening required './../View/productCard.php' (include_path='.:/usr/local/lib/php')
+file: /var/www/html/src/Controller/ProductCardController.php
+line: 35
+2024-11-11 13:42:58
+message: Call to undefined method Model\Product::getProduct()
+file: /var/www/html/src/View/product-card.php
+line: 15
+2024-11-11 13:47:30
+message: Request\ReviewRequest::getProductId(): Return value must be of type int, null returned
+file: /var/www/html/src/Request/ReviewRequest.php
+line: 9
+2024-11-11 15:00:51
+message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column "comment" of relation "card_product" does not exist
+LINE 1: INSERT INTO card_product (user_id, product_id, comment, grad...
+                                                       ^
+file: /var/www/html/src/Model/Review.php
+line: 20
+2024-11-11 15:02:38
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/FavoriteController.php
+line: 46
+2024-11-12 09:19:37
+message: Call to a member function getId() on null
+file: /var/www/html/src/Controller/ProductController.php
+line: 25
+2024-11-12 09:19:40
+message: Cannot use object of type Model\Review as array
+file: /var/www/html/src/Service/GradeService.php
+line: 14
+2024-11-12 12:25:49
+message: Cannot use object of type Model\Review as array
+file: /var/www/html/src/Service/GradeService.php
+line: 15
+2024-11-12 12:26:56
+message: Cannot use object of type Model\Review as array
+file: /var/www/html/src/Service/GradeService.php
+line: 14
+2024-11-12 12:28:05
+message: Cannot use object of type Model\Review as array
+file: /var/www/html/src/Service/GradeService.php
+line: 14
+2024-11-12 12:29:11
+message: Cannot use object of type Model\Review as array
+file: /var/www/html/src/Service/GradeService.php
+line: 14
+2024-11-12 12:29:29
+message: Too few arguments to function Model\Review::__construct(), 0 passed in /var/www/html/src/Model/Review.php on line 60 and exactly 5 expected
+file: /var/www/html/src/Model/Review.php
+line: 15
+2024-11-12 12:37:54
+message: Call to undefined method Model\Order::getProduct()
+file: /var/www/html/src/Service/OrderService.php
+line: 47
+2024-11-12 12:51:23
+message: syntax error, unexpected token "as", expecting ";"
+file: /var/www/html/src/View/product-card.php
+line: 119
+2024-11-12 13:03:20
+message: syntax error, unexpected token "as", expecting ";"
+file: /var/www/html/src/View/product-card.php
+line: 119
+2024-11-12 13:03:28
+message: syntax error, unexpected token "as", expecting ";"
+file: /var/www/html/src/View/product-card.php
+line: 119
+2024-11-12 13:03:37
+message: syntax error, unexpected token "as", expecting ";"
+file: /var/www/html/src/View/product-card.php
+line: 119
+2024-11-12 13:05:05
+message: syntax error, unexpected token "endforeach", expecting end of file
+file: /var/www/html/src/View/product-card.php
+line: 135
+2024-11-12 13:06:43
+message: syntax error, unexpected token "endforeach", expecting end of file
+file: /var/www/html/src/View/product-card.php
+line: 135
+2024-11-12 13:09:14
+message: syntax error, unexpected token "endforeach", expecting end of file
+file: /var/www/html/src/View/product-card.php
+line: 135
+2024-11-12 13:09:21
+message: Call to a member function getId() on array
+file: /var/www/html/src/Service/OrderService.php
+line: 50
+2024-11-13 11:15:15
+message: Call to a member function getId() on array
+file: /var/www/html/src/Service/OrderService.php
+line: 50
+2024-11-13 11:15:54
+message: Call to a member function getId() on array
+file: /var/www/html/src/Service/OrderService.php
+line: 50
+2024-11-13 11:16:09
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 11:17:43
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 11:22:41
+message: Too few arguments to function Model\Order::getAllOrders(), 0 passed in /var/www/html/src/Controller/ReviewController.php on line 35 and exactly 1 expected
+file: /var/www/html/src/Model/Order.php
+line: 37
+2024-11-13 11:27:21
+message: SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "card_product_pkey"
+DETAIL:  Key (id)=(7) already exists.
+file: /var/www/html/src/Model/Review.php
+line: 20
+2024-11-13 11:27:55
+message: Class "User" not found
+file: /var/www/html/src/View/product-card.php
+line: 124
+2024-11-13 11:34:12
+message: Class "User" not found
+file: /var/www/html/src/View/product-card.php
+line: 124
+2024-11-13 11:34:52
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 12:50:58
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 12:52:52
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 12:57:44
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 13:09:11
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 14:00:36
+message: Cannot assign null to property Model\OrderProduct::$productId of type int
+file: /var/www/html/src/Model/OrderProduct.php
+line: 51
+2024-11-13 14:11:13
+message: Model\Review::getProductReviews(): Return value must be of type array, null returned
+file: /var/www/html/src/Model/Review.php
+line: 32
+2024-11-13 14:17:23

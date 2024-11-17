@@ -1,7 +1,7 @@
 <?php
 
 namespace Service\Logger;
-use Model\Model;
+use Model\Logger;
 
 class LoggerDBService implements LoggerServiceInterface
 {
@@ -12,8 +12,7 @@ class LoggerDBService implements LoggerServiceInterface
         $line = $context['line'];
         $date = new \DateTime();
         $date = $date->format('Y-m-d H:i:s');
-        $stmt = Model::getPdo()->prepare("INSERT INTO `logs` (message, file, line, date) VALUES (:message, :file, :line, :date)");
-        $stmt->execute(['message' => $message, 'file' => $file, 'line' => $line, 'date' => $date] );
+        Logger::create($message, $file, $line, $date);
     }
 
     public function info(string $message, array $context = [])

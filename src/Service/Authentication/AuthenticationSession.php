@@ -39,6 +39,7 @@ class AuthenticationSession implements AuthServiceInterface
             return User::getById($userId);
         } else {
             return null;
+
         }
     }
 

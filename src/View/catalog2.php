@@ -49,6 +49,13 @@
                     <div class="product-item-price">
                         <?php echo $product->getPrice(), ' РУБЛЕЙ';?>
                     </div>
+                    <form action="/product-card" method="POST">
+                        <label for="product-id"><b></b></label>
+                        <input type="hidden" name="product_id" placeholder= "Введите product_id" required value="<?=  $product->getId() ?>">
+                        <button type="submit" class="button-pill" >
+                            <span>Детали</span>
+                        </button>
+                    </form>
 
                 </div>
             </a>
@@ -77,6 +84,7 @@
                     <span>В ИЗБРАННОЕ</span>
                 </button>
             </form>
+
         <?php endforeach;?>
 </div>
 

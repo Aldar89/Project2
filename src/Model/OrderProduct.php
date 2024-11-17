@@ -1,6 +1,8 @@
 <?php
 namespace Model;
 
+use Core\Model;
+
 class OrderProduct extends Model
 {
     private int $productId;
@@ -8,11 +10,22 @@ class OrderProduct extends Model
     private int $amount;
     private int $id;
 
-     public  static function createOrder(int $orderId,Product $product, int $amount)
+    public static function createOrder(int $orderId, Product $product, int $amount)
     {
-        throw new \Exception('test exp');
+
         $stmt = self::getPdo()->prepare("INSERT INTO order_products (order_id, product_id, amount) VALUES (:order_id, :product_id, :amount)");
         $stmt->execute(['order_id' => $orderId, 'product_id' => $product->getId(), 'amount' => $amount]);
+    }
+
+    public static function getOrderProduct(int $orderId, int $productId): ?OrderProduct
+    {
+        $stmt = self::getPdo()->prepare("SELECT * FROM order_products WHERE order_id = :order_id AND product_id = :product_id");
+        $stmt->execute(['order_id' => $orderId, 'product_id' => $productId]);
+        $data = $stmt->fetch();
+        if ($data === false) {
+            return null;
+        }
+        return $orderProduct = self::hydrate($data);
     }
 
     public function getProductId(): Product
@@ -35,5 +48,13 @@ class OrderProduct extends Model
         return $this->id;
     }
 
-
+    private static function hydrate($data)
+    {
+        $object = new self();
+        $object->productId = $data['product_id'];
+        $object->orderId = $data['order_id'];
+        $object->amount = $data['amount'];
+        $object->id = $data['id'];
+        return $object;
+    }
 }

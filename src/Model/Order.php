@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Core\Model;
+
 class Order extends Model
 {
     private int $id;
@@ -31,6 +33,22 @@ class Order extends Model
         $order = self::hydrate($data);
         return $order;
     }
+
+    public static function getAllOrders(int $userId):array
+    {
+        $stmt = self::getPdo()->prepare("SELECT * FROM orders where user_id = :user_id ");
+        $stmt->execute(['user_id' => $userId]);
+        $orders = $stmt->fetchAll();
+
+        $result = [];
+        foreach ($orders as $order) {
+           $result[] = self::hydrate($order);
+
+        }
+        return $result;
+    }
+
+
 
     private static function hydrate(array $data):self
     {

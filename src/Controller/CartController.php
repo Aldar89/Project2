@@ -8,7 +8,7 @@ use Service\CartService;
 
 //require_once './../Model/UserProduct.php';
 
-class  CartController extends Controller
+class  CartController
 {
 
     private AuthServiceInterface $authService;
@@ -35,7 +35,7 @@ class  CartController extends Controller
         $productId = $request->getProductId();
         $amount = $request->getAmount();
 
-        $this->cartService->getProductInaCart($userId, $productId, $amount);
+        $this->cartService->addProductInaCart($userId, $productId, $amount);
 
         header('location: /catalog');
 

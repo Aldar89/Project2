@@ -7,7 +7,7 @@ use Model\UserProduct;
 
 class CartService
 {
-    public  function getProductInaCart($userId, $productId, $amount)
+    public  function addProductInaCart($userId, $productId, $amount)
     {
         $result = UserProduct::getByUserIdAndByProductId($userId, $productId);
 

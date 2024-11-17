@@ -10,10 +10,12 @@ class App
 {
     private array $routes = [];
     private LoggerServiceInterface $loggerService;
+    private Container $container;
 
-    public function __construct(LoggerServiceInterface $loggerService)
+    public function __construct(LoggerServiceInterface $loggerService, Container $container)
     {
         $this->loggerService = $loggerService;
+        $this->container = $container;
     }
 
     public function run()
@@ -27,11 +29,9 @@ class App
                 $controllerClassName =  $route[$requestMethod]['class'];
                 $method =$route[$requestMethod]['method'];
                 $requestClass = $route[$requestMethod]['request'];
-                $authService = new AuthenticationSession();
-                $orderService = new OrderService();
-                $carService = new CartService();
 
-                $class = new $controllerClassName($authService, $orderService, $carService);
+
+                $class = $this->container->get($controllerClassName);
 
                 try {
                     if (empty($requestClass)){
