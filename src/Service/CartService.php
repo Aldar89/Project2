@@ -1,9 +1,9 @@
 <?php
 
-namespace Service;
+namespace Aldar\Project2\Service;
 
-use Model\User;
-use Model\UserProduct;
+use Aldar\Project2\Model\User;
+use Aldar\Project2\Model\UserProduct;
 
 class CartService
 {

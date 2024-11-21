@@ -1,9 +1,9 @@
 <?php
-namespace Controller;
-use Model\Product;
-use Service\Authentication\AuthenticationSession;
-use Service\Authentication\AuthServiceInterface;
-use Service\CartService;
+namespace Aldar\Project2\Controller;
+use Aldar\Project2\Model\Product;
+use Aldar\Project2\Service\Authentication\AuthenticationSession;
+use Core\Authentication\AuthServiceInterface;
+use Aldar\Project2\Service\CartService;
 
 //require_once './../Model/Product.php';
 //require_once './../Controller/CartController.php';

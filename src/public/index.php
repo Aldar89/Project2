@@ -1,74 +1,84 @@
 <?php
-require_once './../Core/Autoloader.php';
 
-use Controller\CartController;
-use Controller\FavoriteController;
-use Controller\OrderController;
-use Controller\ProductController;
-use Controller\UserController;
+require './../../vendor/autoload.php';
+
+use Aldar\Project2\Controller\CartController;
+use Aldar\Project2\Controller\FavoriteController;
+use Aldar\Project2\Controller\OrderController;
+use Aldar\Project2\Controller\ProductController;
+use Aldar\Project2\Controller\UserController;
 use Core\App;
 use Core\Autoloader;
 use Core\Container;
-use Request\LoginRequest;
-use Request\OrderRequest;
-use Request\ProductRequest;
-use Request\RegistrateRequest;
-use Service\Logger\LoggerFileService;
-use Controller\ProductCardController;
-use Request\ReviewRequest;
-use Controller\ReviewController;
+use Aldar\Project2\Request\LoginRequest;
+use Aldar\Project2\Request\OrderRequest;
+use Aldar\Project2\Request\ProductRequest;
+use Aldar\Project2\Request\RegistrateRequest;
+use Aldar\Project2\Service\Logger\LoggerFileService;
+use Aldar\Project2\Controller\ProductCardController;
+use Aldar\Project2\Request\ReviewRequest;
+use Aldar\Project2\Controller\ReviewController;
+use Core\Authentication\AuthServiceInterface;
+use Aldar\Project2\Service\OrderService;
+use Aldar\Project2\Service\CartService;
+use Aldar\Project2\Service\GradeService;
+use Aldar\Project2\Service\Logger\LoggerServiceInterface;
 
-$path = __DIR__;
-$path = dirname($path);
-Autoloader::registrate($path);
 
-$loggerService = new LoggerFileService();
+
+//$path = 'var/www/html/src';
+//Autoloader::registrate($path);
+
+
+
 $container = new Container();
+$loggerService = new LoggerFileService();
 $container->set(CartController::class, function (Container $container) {
-    $authService = $container->get(Service\Authentication\AuthServiceInterface::class);
-    $cartService = new \Service\CartService();
+    $authService = $container->get(AuthServiceInterface::class);
+
+    $cartService = new CartService();
     return new CartController($authService,$cartService);
 });
 
 $container->set(OrderController::class, function (Container $container) {
-    $authService = $container->get(Service\Authentication\AuthServiceInterface::class);
-    $orderService = new \Service\OrderService();
-    $cartService = new \Service\CartService();
+    $authService = $container->get(AuthServiceInterface::class);
+    $orderService = new OrderService();
+    $cartService = new CartService();
 
     return new OrderController($authService,$cartService, $orderService);
 });
 
 $container->set(ProductController::class, function ($container) {
-    $authService = $container->get(Service\Authentication\AuthServiceInterface::class);
-    $cartService = new \Service\CartService();
+    $authService = $container->get(AuthServiceInterface::class);
+    $cartService = new CartService();
 
     return new ProductController($authService,$cartService);
 });
 
 $container->set(FavoriteController::class, function ($container) {
-    $authService = $container->get(Service\Authentication\AuthServiceInterface::class);
+    $authService = $container->get(AuthServiceInterface::class);
     return new FavoriteController($authService);
 });
 
-$container->set(Service\Authentication\AuthServiceInterface::class, function (Container $container) {
-  return new Service\Authentication\AuthenticationSession;
+$container->set(AuthServiceInterface::class, function (Container $container) {
+  return new \Aldar\Project2\Service\Authentication\AuthenticationSession();
 });
 
-$container->set(\Service\Logger\LoggerServiceInterface::class, function (Container $container) {
+$container->set(LoggerServiceInterface::class, function (Container $container) {
     return new LoggerFileService();
 });
 
 $container->set(ProductCardController::class, function (Container $container) {
-    $authService = $container->get(Service\Authentication\AuthServiceInterface::class);
-    $gradeService = new \Service\GradeService();
-    $orderService = new \Service\OrderService();
+    $authService = $container->get(AuthServiceInterface::class);
+    $gradeService = new GradeService();
+    $orderService = new OrderService();
     return new ProductCardController($authService,$gradeService,$orderService);
 });
 
 $container->set(ReviewController::class, function (Container $container) {
-    $authService = $container->get(Service\Authentication\AuthServiceInterface::class);
-    $gradeService = new \Service\GradeService();
-    $orderService = new \Service\OrderService();
+    $authService = $container->get(AuthServiceInterface::class);
+    $gradeService = new GradeService();
+    $orderService = new OrderService();
     return new ReviewController($authService, $gradeService, $orderService);
 });
 
@@ -90,7 +100,7 @@ $app->postRoute('/add-favorite', FavoriteController::class, 'addFavorite', Produ
 $app->getRoute('/favorite', FavoriteController::class, 'getFavorite');
 $app->postRoute('/remove-favorite', FavoriteController::class, 'removeFavorite', ProductRequest::class );
 $app->postRoute('/product-card', ProductCardController::class, 'getProductCard', ProductRequest::class );
-$app->postRoute('/add-comment-product', \Controller\ReviewController::class, 'addReview', ReviewRequest::class );
+$app->postRoute('/add-comment-product', ReviewController::class, 'addReview', ReviewRequest::class );
 
 $app->run();
 

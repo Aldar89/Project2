@@ -1,6 +1,6 @@
 <?php
 
-namespace Model;
+namespace Aldar\Project2\Model;
 use Core\Model;
 
 class UserProduct extends Model

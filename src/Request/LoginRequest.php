@@ -1,6 +1,7 @@
 <?php
 
-namespace Request;
+namespace Aldar\Project2\Request;
+use Core\Request;
 
 class LoginRequest extends Request
 {

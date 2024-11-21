@@ -1,14 +1,13 @@
 <?php
 
-namespace Controller;
+namespace Aldar\Project2\Controller;
 
-use Model\Order;
-use Model\Review;
-use Request\Request;
-use Request\ReviewRequest;
-use Service\Authentication\AuthServiceInterface;
-use Service\GradeService;
-use Service\OrderService;
+use Aldar\Project2\Model\Order;
+use Aldar\Project2\Model\Review;
+use Aldar\Project2\Request\ReviewRequest;
+use Core\Authentication\AuthServiceInterface;
+use Aldar\Project2\Service\GradeService;
+use Aldar\Project2\Service\OrderService;
 
 class ReviewController
 {

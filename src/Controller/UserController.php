@@ -1,10 +1,9 @@
 <?php
 
-namespace Controller;
-use http\Env\Request;
-use Model\User;
-use Request\LoginRequest;
-use Request\RegistrateRequest;
+namespace Aldar\Project2\Controller;
+use Aldar\Project2\Model\User;
+use Aldar\Project2\Request\LoginRequest;
+use Aldar\Project2\Request\RegistrateRequest;
 
 class UserController
 {

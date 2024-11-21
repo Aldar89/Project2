@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Service;
+namespace Aldar\Project2\Service;
 
-use Model\Review;
+use Aldar\Project2\Model\Review;
 
 class GradeService
 {

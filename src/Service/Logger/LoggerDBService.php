@@ -1,7 +1,7 @@
 <?php
 
-namespace Service\Logger;
-use Model\Logger;
+namespace Aldar\Project2\Service\Logger;
+use Aldar\Project2\Model\Logger;
 
 class LoggerDBService implements LoggerServiceInterface
 {

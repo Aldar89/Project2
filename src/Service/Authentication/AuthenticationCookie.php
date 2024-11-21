@@ -1,9 +1,10 @@
 <?php
 
-namespace Service\Authentication;
+namespace Aldar\Project2\Service\Authentication;
+use Core\Authentication\AuthServiceInterface;
 
 
-use Model\User;
+use Aldar\Project2\Model\User;
 
 class AuthenticationCookie implements AuthServiceInterface
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Controller;
-use Model\FavoriteProduct;
-use Model\Product;
-use Request\ProductRequest;
-use Service\Authentication\AuthenticationSession;
-use Service\Authentication\AuthServiceInterface;
+namespace Aldar\Project2\Controller;
+use Aldar\Project2\Model\FavoriteProduct;
+use Aldar\Project2\Model\Product;
+use Aldar\Project2\Request\ProductRequest;
+use Aldar\Project2\Service\Authentication\AuthenticationSession;
+use Core\Authentication\AuthServiceInterface;
 
 class FavoriteController
 {

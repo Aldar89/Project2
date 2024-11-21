@@ -1,6 +1,7 @@
 <?php
 
-namespace Service\Logger;
+namespace Aldar\Project2\Service\Logger;
+use Aldar\Project2\Service\Logger\LoggerServiceInterface;
 
 class LoggerFileService implements LoggerServiceInterface
 {

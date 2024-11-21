@@ -1,0 +1,17 @@
+{
+    "name": "aldar/project2",
+    "autoload": {
+        "psr-4": {
+            "Aldar\\Project2\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AldarBudazhapov",
+            "email": "budazhapov@aginskhost.ru"
+        }
+    ],
+    "require": {
+        "aldar/my-core": "^1.0"
+    }
+}

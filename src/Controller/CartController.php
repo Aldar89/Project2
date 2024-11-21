@@ -1,10 +1,10 @@
 <?php
-namespace Controller;
-use Model\UserProduct;
-use Request\ProductRequest;
-use Service\Authentication\AuthenticationSession;
-use Service\Authentication\AuthServiceInterface;
-use Service\CartService;
+namespace Aldar\Project2\Controller;
+use Aldar\Project2\Model\UserProduct;
+use Aldar\Project2\Request\ProductRequest;
+use Aldar\Project2\Service\Authentication\AuthenticationSession;
+use Core\Authentication\AuthServiceInterface;
+use Aldar\Project2\Service\CartService;
 
 //require_once './../Model/UserProduct.php';
 

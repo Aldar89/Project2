@@ -1,15 +1,15 @@
 <?php
 
-namespace Controller;
-use DTO\CreateOrderDTO;
-use Model\Order;
-use Model\OrderProduct;
-use Model\UserProduct;
-use Request\OrderRequest;
-use Service\Authentication\AuthenticationSession;
-use Service\Authentication\AuthServiceInterface;
-use Service\CartService;
-use Service\OrderService;
+namespace Aldar\Project2\Controller;
+use Aldar\Project2\DTO\CreateOrderDTO;
+use Aldar\Project2\Model\Order;
+use Aldar\Project2\Model\OrderProduct;
+use Aldar\Project2\Model\UserProduct;
+use Aldar\Project2\Request\OrderRequest;
+use Aldar\Project2\Service\Authentication\AuthenticationSession;
+use Core\Authentication\AuthServiceInterface;
+use Aldar\Project2\Service\CartService;
+use Aldar\Project2\Service\OrderService;
 
 
 class OrderController

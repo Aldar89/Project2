@@ -1,6 +1,6 @@
 <?php
 
-namespace Service\Logger;
+namespace Aldar\Project2\Service\Logger;
 
 interface LoggerServiceInterface
 {

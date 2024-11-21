@@ -1,8 +1,9 @@
 <?php
 
-namespace Service\Authentication;
+namespace Aldar\Project2\Service\Authentication;
 
-use Model\User;
+use Aldar\Project2\Model\User;
+use Core\Authentication\AuthServiceInterface;
 
 class AuthenticationSession implements AuthServiceInterface
 {

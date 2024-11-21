@@ -1,6 +1,6 @@
 <?php
 
-namespace DTO;
+namespace Aldar\Project2\DTO;
 
 class CreateOrderDTO
 {

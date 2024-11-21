@@ -1,8 +1,7 @@
 <?php
 
-namespace Model;
+namespace Aldar\Project2\Model;
 use Core\Model;
-
 class Product extends Model
 {
     private int $id ;

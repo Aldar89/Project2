@@ -1,12 +1,12 @@
 <?php
 
-namespace Service;
+namespace  Aldar\Project2\Service;
 use Core\Model;
-use DTO\CreateOrderDTO;
-use Model\Order;
-use Model\OrderProduct;
-use Model\UserProduct;
-use Model\Product;
+use Aldar\Project2\DTO\CreateOrderDTO;
+use Aldar\Project2\Model\Order;
+use Aldar\Project2\Model\OrderProduct;
+use Aldar\Project2\Model\UserProduct;
+use Aldar\Project2\Model\Product;
 
 class OrderService
 {

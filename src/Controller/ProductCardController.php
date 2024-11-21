@@ -1,15 +1,15 @@
 <?php
 
-namespace Controller;
+namespace Aldar\Project2\Controller;
 
-use Model\Order;
-use Model\Product;
-use Model\Review;
-use Request\ProductRequest;
-use Service\Authentication\AuthServiceInterface;
-use Service\GradeService;
-use Model\User;
-use Service\OrderService;
+use Aldar\Project2\Model\Order;
+use Aldar\Project2\Model\Product;
+use Aldar\Project2\Model\Review;
+use Aldar\Project2\Request\ProductRequest;
+use Core\Authentication\AuthServiceInterface;
+use Aldar\Project2\Service\GradeService;
+use Aldar\Project2\Model\User;
+use Aldar\Project2\Service\OrderService;
 
 
 class ProductCardController
